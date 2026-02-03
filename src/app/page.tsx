@@ -317,7 +317,7 @@ function MainPage({
               className="flex overflow-x-auto gap-3 pb-2 scrollbar-hide scroll-smooth"
             >
               {CATEGORIES.map((cat) => (
-                <CategoryCard key={cat.id} category={cat} size="sm" />
+                <CategoryCard key={cat.id} category={cat} />
               ))}
             </div>
 
