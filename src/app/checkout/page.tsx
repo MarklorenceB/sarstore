@@ -1,78 +1,92 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { ArrowLeft, MapPin, Phone, User, FileText, CreditCard, Check } from 'lucide-react'
-import { useCartStore, useCartSubtotal, useCartDeliveryFee, useCartTotal } from '@/store/cart'
-import { Button, Input } from '@/components/ui'
-import { Textarea } from '@/components/ui/Input'
-import { STORE_INFO, DELIVERY_CONFIG } from '@/lib/constants'
-import { formatPrice, isValidPhoneNumber } from '@/lib/utils'
-import { createOrder } from '@/lib/api'
-import toast from 'react-hot-toast'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  MapPin,
+  Phone,
+  User,
+  FileText,
+  CreditCard,
+  Check,
+} from "lucide-react";
+import {
+  useCartStore,
+  useCartSubtotal,
+  useCartDeliveryFee,
+  useCartTotal,
+} from "@/store/cart";
+import { Button, Input } from "@/components/ui";
+import { Textarea } from "@/components/ui/Input";
+import { STORE_INFO, DELIVERY_CONFIG } from "@/lib/constants";
+import { formatPrice, isValidPhoneNumber } from "@/lib/utils";
+import { createOrder } from "@/lib/api";
+import { PRODUCT_IMAGES } from "@/lib/product-images";
+import toast from "react-hot-toast";
 
-type PaymentMethod = 'cod' | 'gcash'
+type PaymentMethod = "cod" | "gcash";
 
 export default function CheckoutPage() {
-  const router = useRouter()
-  const items = useCartStore((state) => state.items)
-  const clearCart = useCartStore((state) => state.clearCart)
-  const subtotal = useCartSubtotal()
-  const deliveryFee = useCartDeliveryFee()
-  const total = useCartTotal()
+  const router = useRouter();
+  const items = useCartStore((state) => state.items);
+  const clearCart = useCartStore((state) => state.clearCart);
+  const subtotal = useCartSubtotal();
+  const deliveryFee = useCartDeliveryFee();
+  const total = useCartTotal();
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('cod')
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cod");
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    address: '',
-    notes: '',
-    gcashReference: '',
-  })
-  const [errors, setErrors] = useState<Record<string, string>>({})
+    name: "",
+    phone: "",
+    address: "",
+    notes: "",
+    gcashReference: "",
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {}
+    const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Name is required'
+      newErrors.name = "Name is required";
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
+      newErrors.phone = "Phone number is required";
     } else if (!isValidPhoneNumber(formData.phone)) {
-      newErrors.phone = 'Please enter a valid Philippine phone number'
+      newErrors.phone = "Please enter a valid Philippine phone number";
     }
 
     if (!formData.address.trim()) {
-      newErrors.address = 'Delivery address is required'
+      newErrors.address = "Delivery address is required";
     }
 
-    if (paymentMethod === 'gcash' && !formData.gcashReference.trim()) {
-      newErrors.gcashReference = 'GCash reference number is required'
+    if (paymentMethod === "gcash" && !formData.gcashReference.trim()) {
+      newErrors.gcashReference = "GCash reference number is required";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validateForm()) {
-      toast.error('Please fill in all required fields')
-      return
+      toast.error("Please fill in all required fields");
+      return;
     }
 
     if (items.length === 0) {
-      toast.error('Your cart is empty')
-      return
+      toast.error("Your cart is empty");
+      return;
     }
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       const order = await createOrder({
@@ -90,7 +104,7 @@ export default function CheckoutPage() {
           productPrice: item.product.price,
           quantity: item.quantity,
         })),
-      })
+      });
 
       // Save order details for confirmation page
       const orderDetails = {
@@ -104,6 +118,8 @@ export default function CheckoutPage() {
           price: item.product.price,
           quantity: item.quantity,
           emoji: item.product.image_emoji,
+          slug: item.product.slug,
+          image_url: item.product.image_url,
         })),
         subtotal,
         deliveryFee,
@@ -111,23 +127,31 @@ export default function CheckoutPage() {
         paymentMethod,
         gcashReference: formData.gcashReference,
         createdAt: new Date().toISOString(),
-      }
-      
+      };
+
       // Store in localStorage for order confirmation page
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(`order_${order.order_number}`, JSON.stringify(orderDetails))
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          `order_${order.order_number}`,
+          JSON.stringify(orderDetails),
+        );
       }
 
-      clearCart()
-      toast.success('Order placed successfully!')
-      router.push(`/order/${order.order_number}`)
+      clearCart();
+      toast.success("Order placed successfully!");
+      router.push(`/order/${order.order_number}`);
     } catch (error) {
-      console.error('Order error:', error)
-      toast.error('Failed to place order. Please try again.')
+      console.error("Order error:", error);
+      toast.error("Failed to place order. Please try again.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
+
+  // Helper function to get product image
+  const getProductImage = (slug: string, image_url?: string) => {
+    return PRODUCT_IMAGES[slug] || image_url || null;
+  };
 
   // Redirect if cart is empty
   if (items.length === 0) {
@@ -139,14 +163,16 @@ export default function CheckoutPage() {
           className="text-center"
         >
           <span className="text-6xl mb-4 block">🛒</span>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            Your cart is empty
+          </h1>
           <p className="text-gray-500 mb-6">Add some products to checkout</p>
           <Link href="/">
             <Button>Continue Shopping</Button>
           </Link>
         </motion.div>
       </div>
-    )
+    );
   }
 
   return (
@@ -184,7 +210,9 @@ export default function CheckoutPage() {
                     label="Full Name"
                     placeholder="Juan Dela Cruz"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
                     error={errors.name}
                     leftIcon={<User className="w-4 h-4" />}
                   />
@@ -192,7 +220,9 @@ export default function CheckoutPage() {
                     label="Phone Number"
                     placeholder="09XX XXX XXXX"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     error={errors.phone}
                     leftIcon={<Phone className="w-4 h-4" />}
                   />
@@ -215,7 +245,9 @@ export default function CheckoutPage() {
                     label="Complete Address"
                     placeholder="House/Unit No., Street, Barangay, City"
                     value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, address: e.target.value })
+                    }
                     error={errors.address}
                     rows={3}
                   />
@@ -223,7 +255,9 @@ export default function CheckoutPage() {
                     label="Delivery Notes (Optional)"
                     placeholder="Landmarks, special instructions, etc."
                     value={formData.notes}
-                    onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, notes: e.target.value })
+                    }
                     rows={2}
                   />
                 </div>
@@ -244,32 +278,38 @@ export default function CheckoutPage() {
                   {/* COD Option */}
                   <label
                     className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                      paymentMethod === 'cod'
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                      paymentMethod === "cod"
+                        ? "border-primary-500 bg-primary-50"
+                        : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
                     <input
                       type="radio"
                       name="payment"
                       value="cod"
-                      checked={paymentMethod === 'cod'}
-                      onChange={() => setPaymentMethod('cod')}
+                      checked={paymentMethod === "cod"}
+                      onChange={() => setPaymentMethod("cod")}
                       className="sr-only"
                     />
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      paymentMethod === 'cod' ? 'border-primary-500' : 'border-gray-300'
-                    }`}>
-                      {paymentMethod === 'cod' && (
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        paymentMethod === "cod"
+                          ? "border-primary-500"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {paymentMethod === "cod" && (
                         <div className="w-3 h-3 rounded-full bg-primary-500" />
                       )}
                     </div>
                     <span className="text-3xl">💵</span>
                     <div className="flex-1">
                       <p className="font-semibold">Cash on Delivery</p>
-                      <p className="text-sm text-gray-500">Pay when you receive your order</p>
+                      <p className="text-sm text-gray-500">
+                        Pay when you receive your order
+                      </p>
                     </div>
-                    {paymentMethod === 'cod' && (
+                    {paymentMethod === "cod" && (
                       <Check className="w-5 h-5 text-primary-500" />
                     )}
                   </label>
@@ -277,48 +317,59 @@ export default function CheckoutPage() {
                   {/* GCash Option */}
                   <label
                     className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
-                      paymentMethod === 'gcash'
-                        ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                      paymentMethod === "gcash"
+                        ? "border-primary-500 bg-primary-50"
+                        : "border-gray-200 hover:border-gray-300"
                     }`}
                   >
                     <input
                       type="radio"
                       name="payment"
                       value="gcash"
-                      checked={paymentMethod === 'gcash'}
-                      onChange={() => setPaymentMethod('gcash')}
+                      checked={paymentMethod === "gcash"}
+                      onChange={() => setPaymentMethod("gcash")}
                       className="sr-only"
                     />
-                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                      paymentMethod === 'gcash' ? 'border-primary-500' : 'border-gray-300'
-                    }`}>
-                      {paymentMethod === 'gcash' && (
+                    <div
+                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        paymentMethod === "gcash"
+                          ? "border-primary-500"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {paymentMethod === "gcash" && (
                         <div className="w-3 h-3 rounded-full bg-primary-500" />
                       )}
                     </div>
                     <span className="text-3xl">📱</span>
                     <div className="flex-1">
                       <p className="font-semibold">GCash</p>
-                      <p className="text-sm text-gray-500">Send to {STORE_INFO.gcashNumber}</p>
+                      <p className="text-sm text-gray-500">
+                        Send to {STORE_INFO.gcashNumber}
+                      </p>
                     </div>
-                    {paymentMethod === 'gcash' && (
+                    {paymentMethod === "gcash" && (
                       <Check className="w-5 h-5 text-primary-500" />
                     )}
                   </label>
 
                   {/* GCash Reference Input */}
-                  {paymentMethod === 'gcash' && (
+                  {paymentMethod === "gcash" && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
+                      animate={{ opacity: 1, height: "auto" }}
                       className="pt-2"
                     >
                       <Input
                         label="GCash Reference Number"
                         placeholder="Enter reference number after payment"
                         value={formData.gcashReference}
-                        onChange={(e) => setFormData({ ...formData, gcashReference: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            gcashReference: e.target.value,
+                          })
+                        }
                         error={errors.gcashReference}
                         leftIcon={<FileText className="w-4 h-4" />}
                       />
@@ -340,22 +391,40 @@ export default function CheckoutPage() {
 
                 {/* Items */}
                 <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
-                  {items.map((item) => (
-                    <div key={item.id} className="flex gap-3">
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-2xl flex-shrink-0">
-                        {item.product.image_emoji || '📦'}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-sm truncate">{item.product.name}</p>
-                        <p className="text-xs text-gray-500">
-                          {formatPrice(item.product.price)} × {item.quantity}
+                  {items.map((item) => {
+                    const imageUrl = getProductImage(
+                      item.product.slug,
+                      item.product.image_url,
+                    );
+                    return (
+                      <div key={item.id} className="flex gap-3">
+                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {imageUrl ? (
+                            <img
+                              src={imageUrl}
+                              alt={item.product.name}
+                              className="w-full  object-cover"
+                            />
+                          ) : (
+                            <span className="text-2xl">
+                              {item.product.image_emoji || "📦"}
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-sm truncate">
+                            {item.product.name}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {formatPrice(item.product.price)} × {item.quantity}
+                          </p>
+                        </div>
+                        <p className="font-semibold text-sm">
+                          {formatPrice(item.product.price * item.quantity)}
                         </p>
                       </div>
-                      <p className="font-semibold text-sm">
-                        {formatPrice(item.product.price * item.quantity)}
-                      </p>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {/* Totals */}
@@ -366,18 +435,28 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600">Delivery Fee</span>
-                    <span className={deliveryFee === 0 ? 'text-primary-600 font-medium' : ''}>
-                      {deliveryFee === 0 ? 'FREE' : formatPrice(deliveryFee)}
+                    <span
+                      className={
+                        deliveryFee === 0 ? "text-primary-600 font-medium" : ""
+                      }
+                    >
+                      {deliveryFee === 0 ? "FREE" : formatPrice(deliveryFee)}
                     </span>
                   </div>
                   {subtotal < DELIVERY_CONFIG.freeDeliveryThreshold && (
                     <p className="text-xs text-gray-500">
-                      Add {formatPrice(DELIVERY_CONFIG.freeDeliveryThreshold - subtotal)} more for free delivery
+                      Add{" "}
+                      {formatPrice(
+                        DELIVERY_CONFIG.freeDeliveryThreshold - subtotal,
+                      )}{" "}
+                      more for free delivery
                     </p>
                   )}
                   <div className="flex justify-between text-lg font-bold pt-2 border-t border-gray-200">
                     <span>Total</span>
-                    <span className="text-primary-600">{formatPrice(total)}</span>
+                    <span className="text-primary-600">
+                      {formatPrice(total)}
+                    </span>
                   </div>
                 </div>
 
@@ -400,5 +479,5 @@ export default function CheckoutPage() {
         </form>
       </main>
     </div>
-  )
+  );
 }

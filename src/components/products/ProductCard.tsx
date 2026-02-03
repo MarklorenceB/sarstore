@@ -7,6 +7,7 @@ import { Heart, Plus, Minus, ShoppingCart, Check } from "lucide-react";
 import { useCartStore } from "@/store/cart";
 import { Badge, DiscountBadge, StarRating } from "@/components/ui";
 import { formatPrice } from "@/lib/utils";
+import { PRODUCT_IMAGES } from "@/lib/product-images";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
 
@@ -37,6 +38,9 @@ export default function ProductCard({
       )
     : 0;
 
+  // Get image URL - prioritize local images, then database, then emoji
+  const imageUrl = PRODUCT_IMAGES[product.slug] || product.image_url;
+
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -56,8 +60,16 @@ export default function ProductCard({
           className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 max-w-sm w-full"
         >
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <span className="text-3xl">{product.image_emoji || "📦"}</span>
+            <div className="w-16 h-16 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-3xl">{product.image_emoji || "📦"}</span>
+              )}
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
@@ -76,7 +88,7 @@ export default function ProductCard({
               </p>
             </div>
           </div>
-          <div className="flex gap-2 mt-4">
+          <div className="flex gap-2 mt-4 added-cart">
             <button
               onClick={() => toast.dismiss(t.id)}
               className="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-sm font-medium hover:bg-gray-200 transition-colors"
@@ -86,7 +98,7 @@ export default function ProductCard({
             <Link
               href="/checkout"
               onClick={() => toast.dismiss(t.id)}
-              className="flex-1 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600 transition-colors text-center"
+              className="flex-1 px-4 py-2 bg-primary-500 text-white rounded-xl text-sm font-medium hover:bg-primary-600 transition-colors text-center btn-checkout"
             >
               Checkout
             </Link>
@@ -125,8 +137,16 @@ export default function ProductCard({
             animate={{ opacity: t.visible ? 1 : 0, scale: t.visible ? 1 : 0.8 }}
             className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 max-w-sm w-full text-center"
           >
-            <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-              <span className="text-2xl">🗑️</span>
+            <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden">
+              {imageUrl ? (
+                <img
+                  src={imageUrl}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <span className="text-2xl">🗑️</span>
+              )}
             </div>
             <h3 className="font-bold text-gray-900 mb-1">Remove Item?</h3>
             <p className="text-gray-500 text-sm mb-4">
@@ -202,11 +222,11 @@ export default function ProductCard({
         {/* Product Image */}
         <Link href={`/product/${product.slug}`}>
           <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl flex items-center justify-center overflow-hidden cursor-pointer">
-            {product.image_url ? (
+            {imageUrl ? (
               <img
-                src={product.image_url}
+                src={imageUrl}
                 alt={product.name}
-                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                className="w-full  object-cover hover:scale-105 transition-transform duration-300"
               />
             ) : (
               <span className="text-4xl sm:text-5xl md:text-6xl">

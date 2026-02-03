@@ -21,6 +21,7 @@ import { CartDrawer } from "@/components/cart";
 import { Button, StarRating } from "@/components/ui";
 import { formatPrice } from "@/lib/utils";
 import { getProducts } from "@/lib/api";
+import { PRODUCT_IMAGES } from "@/lib/product-images";
 import { DELIVERY_CONFIG } from "@/lib/constants";
 import type { Product } from "@/types";
 import toast from "react-hot-toast";
@@ -58,6 +59,11 @@ export default function ProductPage() {
     loadProduct();
   }, [slug]);
 
+  // Get image URL - prioritize local images, then database, then emoji
+  const imageUrl = product
+    ? PRODUCT_IMAGES[product.slug] || product.image_url
+    : null;
+
   const handleAddToCart = () => {
     if (!product) return;
 
@@ -79,10 +85,10 @@ export default function ProductPage() {
           className="bg-white rounded-2xl shadow-2xl border border-gray-100 p-5 max-w-md w-full"
         >
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              {product.image_url ? (
+            <div className="w-20 h-20 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
+              {imageUrl ? (
                 <img
-                  src={product.image_url}
+                  src={imageUrl}
                   alt={product.name}
                   className="w-full h-full object-cover rounded-xl"
                 />
@@ -192,11 +198,11 @@ export default function ProductPage() {
           >
             <div className="sticky top-24">
               <div className="aspect-square bg-white rounded-3xl border border-gray-100 flex items-center justify-center overflow-hidden shadow-lg">
-                {product.image_url ? (
+                {imageUrl ? (
                   <img
-                    src={product.image_url}
+                    src={imageUrl}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    className="w-full  object-cover"
                   />
                 ) : (
                   <span className="text-[120px] sm:text-[180px]">
@@ -266,16 +272,17 @@ export default function ProductPage() {
             {/* Price */}
             <div className="flex items-baseline gap-4 flex-wrap">
               <span className="text-3xl sm:text-4xl font-bold text-primary-600">
-                {formatPrice(product.price)}
+                {formatPrice(product.price * quantity)}
               </span>
               {product.old_price && (
                 <span className="text-xl text-gray-400 line-through">
-                  {formatPrice(product.old_price)}
+                  {formatPrice(product.old_price * quantity)}
                 </span>
               )}
               {discount > 0 && (
                 <span className="text-sm font-semibold text-red-600 bg-red-50 px-3 py-1 rounded-full">
-                  Save {formatPrice(product.old_price! - product.price)}
+                  Save{" "}
+                  {formatPrice((product.old_price! - product.price) * quantity)}
                 </span>
               )}
             </div>
@@ -350,7 +357,7 @@ export default function ProductPage() {
                   ) : (
                     <>
                       <ShoppingCart className="w-6 h-6" />
-                      Add to Cart - {formatPrice(product.price * quantity)}
+                      Add to Cart
                     </>
                   )}
                 </motion.button>

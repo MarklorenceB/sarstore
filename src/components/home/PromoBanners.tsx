@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function PromoBanners() {
   return (
@@ -19,16 +19,16 @@ export default function PromoBanners() {
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-            
+
             <div className="relative z-10">
               <span className="inline-block text-sm font-semibold bg-white/20 px-3 py-1 rounded-full mb-4">
                 FREE
               </span>
               <h3 className="text-2xl sm:text-3xl font-bold mb-2">
-                Free delivery over ₱1,000
+                Free delivery
               </h3>
               <p className="text-primary-100 mb-6 max-w-xs">
-                Shop ₱1,000 worth of products and get free delivery anywhere.
+                Shop your favorite products and get free delivery anywhere.
               </p>
               <Link
                 href="/"
@@ -56,7 +56,7 @@ export default function PromoBanners() {
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-            
+
             <div className="relative z-10">
               <span className="inline-block text-sm font-semibold bg-white/20 px-3 py-1 rounded-full mb-4">
                 60% OFF
@@ -84,5 +84,5 @@ export default function PromoBanners() {
         </div>
       </div>
     </section>
-  )
+  );
 }

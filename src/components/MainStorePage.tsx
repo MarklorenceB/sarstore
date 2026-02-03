@@ -1,57 +1,66 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronRight } from 'lucide-react'
-import { TopBar, Header, Footer } from '@/components/layout'
-import { HeroBanner, PromoBanners } from '@/components/home'
-import { CategoryCard, CategoryBar } from '@/components/categories'
-import { ProductCard, ProductGrid, SmallProductCard } from '@/components/products'
-import { CartDrawer } from '@/components/cart'
-import { CountdownTimer } from '@/components/ui'
-import { CATEGORIES } from '@/lib/constants'
-import { getProducts, getFeaturedProducts, getDailyBestSellers, getTopProducts } from '@/lib/api'
-import type { Product } from '@/types'
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { ChevronRight } from "lucide-react";
+import { TopBar, Header, Footer } from "@/components/layout";
+import { HeroBanner, PromoBanners } from "@/components/home";
+import { CategoryCard, CategoryBar } from "@/components/categories";
+import {
+  ProductCard,
+  ProductGrid,
+  SmallProductCard,
+} from "@/components/products";
+import { CartDrawer } from "@/components/cart";
+import { CountdownTimer } from "@/components/ui";
+import { CATEGORIES } from "@/lib/constants";
+import {
+  getProducts,
+  getFeaturedProducts,
+  getDailyBestSellers,
+  getTopProducts,
+} from "@/lib/api";
+import type { Product } from "@/types";
 
 interface MainStorePageProps {
-  onLogout: () => void
+  onLogout: () => void;
 }
 
 export default function MainStorePage({ onLogout }: MainStorePageProps) {
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
-  const [dailyBestSells, setDailyBestSells] = useState<Product[]>([])
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const [dailyBestSells, setDailyBestSells] = useState<Product[]>([]);
   const [topProducts, setTopProducts] = useState<{
-    topSells: Product[]
-    topRated: Product[]
-    trending: Product[]
-    recentlyAdded: Product[]
-  }>({ topSells: [], topRated: [], trending: [], recentlyAdded: [] })
-  const [activeFilter, setActiveFilter] = useState<string>('all')
-  const [isLoading, setIsLoading] = useState(true)
+    topSells: Product[];
+    topRated: Product[];
+    trending: Product[];
+    recentlyAdded: Product[];
+  }>({ topSells: [], topRated: [], trending: [], recentlyAdded: [] });
+  const [activeFilter, setActiveFilter] = useState<string>("all");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
       try {
         const [featured, bestSells, top] = await Promise.all([
           getFeaturedProducts(),
           getDailyBestSellers(),
           getTopProducts(),
-        ])
-        setFeaturedProducts(featured)
-        setDailyBestSells(bestSells)
-        setTopProducts(top)
+        ]);
+        setFeaturedProducts(featured);
+        setDailyBestSells(bestSells);
+        setTopProducts(top);
       } catch (error) {
-        console.error('Failed to load products:', error)
+        console.error("Failed to load products:", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
-  const filterTabs = ['All', 'Cooking', 'Meat', 'Dairy', 'Snacks']
+  const filterTabs = ["All", "Cooking", "Meat", "Dairy", "Snacks"];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -72,18 +81,20 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
               Explore Categories
             </h2>
             <div className="hidden sm:flex items-center gap-2">
-              {['All', 'Cooking', 'Meat', 'Dairy', 'Beverages'].map((filter, i) => (
-                <button
-                  key={i}
-                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                    i === 0
-                      ? 'bg-primary-500 text-white'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
+              {["All", "Cooking", "Meat", "Dairy", "Beverages"].map(
+                (filter, i) => (
+                  <button
+                    key={i}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                      i === 0
+                        ? "bg-primary-500 text-white"
+                        : "text-gray-600 hover:text-primary-600 hover:bg-primary-50"
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ),
+              )}
             </div>
           </div>
           <div className="flex overflow-x-auto gap-6 pb-4 scrollbar-hide">
@@ -98,8 +109,8 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
                   item_count: cat.itemCount,
                   sort_order: i,
                   is_active: true,
-                  created_at: '',
-                  updated_at: '',
+                  created_at: "",
+                  updated_at: "",
                 }}
               />
             ))}
@@ -127,8 +138,8 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
                   onClick={() => setActiveFilter(tab.toLowerCase())}
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
                     activeFilter === tab.toLowerCase()
-                      ? 'bg-primary-500 text-white'
-                      : 'text-gray-600 hover:text-primary-600 hover:bg-primary-50'
+                      ? "bg-primary-500 text-white"
+                      : "text-gray-600 hover:text-primary-600 hover:bg-primary-50"
                   }`}
                 >
                   {tab}
@@ -164,13 +175,13 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
             </h2>
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex gap-2">
-                {['Featured', 'Popular', 'New'].map((tab, i) => (
+                {["Featured", "Popular", "New"].map((tab, i) => (
                   <button
                     key={tab}
                     className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                       i === 0
-                        ? 'bg-primary-100 text-primary-600'
-                        : 'text-gray-600 hover:text-primary-600'
+                        ? "bg-primary-100 text-primary-600"
+                        : "text-gray-600 hover:text-primary-600"
                     }`}
                   >
                     {tab}
@@ -205,10 +216,10 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-6">
             {[
-              { title: 'Top Sells', products: topProducts.topSells },
-              { title: 'Top Rated', products: topProducts.topRated },
-              { title: 'Trending', products: topProducts.trending },
-              { title: 'Recently Added', products: topProducts.recentlyAdded },
+              { title: "Top Sells", products: topProducts.topSells },
+              { title: "Top Rated", products: topProducts.topRated },
+              { title: "Trending", products: topProducts.trending },
+              { title: "Recently Added", products: topProducts.recentlyAdded },
             ].map(({ title, products }) => (
               <motion.div
                 key={title}
@@ -245,5 +256,5 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
       {/* Cart Drawer */}
       <CartDrawer />
     </div>
-  )
+  );
 }

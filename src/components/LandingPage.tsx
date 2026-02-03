@@ -1,22 +1,22 @@
-'use client'
+"use client";
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { Truck, Shield, CreditCard, Headphones } from 'lucide-react'
-import { STORE_INFO, CATEGORIES, STATS, FEATURES } from '@/lib/constants'
-import Button from '@/components/ui/Button'
-import { CategoryCard } from '@/components/categories'
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { Truck, Shield, CreditCard, Headphones } from "lucide-react";
+import { STORE_INFO, CATEGORIES, STATS, FEATURES } from "@/lib/constants";
+import Button from "@/components/ui/Button";
+import { CategoryCard } from "@/components/categories";
 
 interface LandingPageProps {
-  onOpenLogin: (mode?: 'login' | 'signup') => void
+  onOpenLogin: (mode?: "login" | "signup") => void;
 }
 
 const featureIcons: Record<string, React.ReactNode> = {
   truck: <Truck className="w-8 h-8" />,
   shield: <Shield className="w-8 h-8" />,
-  'credit-card': <CreditCard className="w-8 h-8" />,
+  "credit-card": <CreditCard className="w-8 h-8" />,
   headphones: <Headphones className="w-8 h-8" />,
-}
+};
 
 export default function LandingPage({ onOpenLogin }: LandingPageProps) {
   return (
@@ -33,9 +33,7 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
               <p className="text-xs text-gray-500">{STORE_INFO.tagline}</p>
             </div>
           </div>
-          <Button onClick={() => onOpenLogin('login')}>
-            Login
-          </Button>
+          <Button onClick={() => onOpenLogin("login")}>Login</Button>
         </div>
       </header>
 
@@ -56,21 +54,18 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
               <span className="text-primary-500"> Delivered</span> to Your Door
             </h1>
             <p className="text-lg text-gray-600">
-              Shop from your favorite local sari-sari store online. Fresh products, 
-              great prices, and fast delivery right to your barangay.
+              Shop from your favorite local sari-sari store online. Fresh
+              products, great prices, and fast delivery right to your barangay.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
-                onClick={() => onOpenLogin('signup')}
+                onClick={() => onOpenLogin("signup")}
                 className="shadow-lg shadow-primary-500/30"
               >
                 Start Shopping →
               </Button>
-              <Button
-                variant="secondary"
-                size="lg"
-              >
+              <Button variant="secondary" size="lg">
                 Learn More
               </Button>
             </div>
@@ -84,7 +79,9 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 + i * 0.1 }}
                 >
-                  <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
                   <p className="text-sm text-gray-500">{stat.label}</p>
                 </motion.div>
               ))}
@@ -101,18 +98,20 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
             <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-primary-600 rounded-full blur-3xl opacity-20 scale-75" />
             <div className="relative bg-gradient-to-br from-primary-100 to-primary-50 rounded-3xl p-8 flex items-center justify-center">
               <div className="grid grid-cols-3 gap-4">
-                {['🥬', '🍅', '🥕', '🥚', '🍗', '🥩', '🍞', '🥛', '🍎'].map((emoji, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + i * 0.05 }}
-                    whileHover={{ scale: 1.1 }}
-                    className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center text-3xl sm:text-4xl cursor-pointer"
-                  >
-                    {emoji}
-                  </motion.div>
-                ))}
+                {["🥬", "🍅", "🥕", "🥚", "🍗", "🥩", "🍞", "🥛", "🍎"].map(
+                  (emoji, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: 0.5 + i * 0.05 }}
+                      whileHover={{ scale: 1.1 }}
+                      className="w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-2xl shadow-lg flex items-center justify-center text-3xl sm:text-4xl cursor-pointer"
+                    >
+                      {emoji}
+                    </motion.div>
+                  ),
+                )}
               </div>
             </div>
           </motion.div>
@@ -135,7 +134,9 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
                 <div className="w-16 h-16 bg-primary-100 text-primary-600 rounded-2xl flex items-center justify-center mb-4">
                   {featureIcons[feature.icon]}
                 </div>
-                <h3 className="font-bold text-gray-900 mb-1">{feature.title}</h3>
+                <h3 className="font-bold text-gray-900 mb-1">
+                  {feature.title}
+                </h3>
                 <p className="text-sm text-gray-500">{feature.description}</p>
               </motion.div>
             ))}
@@ -169,16 +170,16 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
                     id: `cat-${cat.id}`,
                     sort_order: i,
                     is_active: true,
-                    created_at: '',
-                    updated_at: '',
+                    created_at: "",
+                    updated_at: "",
                   }}
-                  onClick={() => onOpenLogin('signup')}
+                  onClick={() => onOpenLogin("signup")}
                 />
               </motion.div>
             ))}
           </div>
           <div className="text-center mt-8">
-            <Button onClick={() => onOpenLogin('signup')}>
+            <Button onClick={() => onOpenLogin("signup")}>
               View All Categories →
             </Button>
           </div>
@@ -197,12 +198,13 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
               Ready to Start Shopping?
             </h2>
             <p className="text-primary-100 text-lg mb-8">
-              Join thousands of happy customers who trust Sari-Store for their daily grocery needs.
+              Join thousands of happy customers who trust Sari-Store for their
+              daily grocery needs.
             </p>
             <Button
               variant="secondary"
               size="lg"
-              onClick={() => onOpenLogin('signup')}
+              onClick={() => onOpenLogin("signup")}
               className="bg-white text-primary-600 hover:bg-primary-50"
             >
               Create Free Account →
@@ -216,7 +218,9 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
         <div className="max-w-7xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-4">
             <span className="text-2xl">🛒</span>
-            <span className="font-bold text-xl text-primary-600">{STORE_INFO.name}</span>
+            <span className="font-bold text-xl text-primary-600">
+              {STORE_INFO.name}
+            </span>
           </div>
           <p className="text-gray-500 text-sm">
             © {new Date().getFullYear()} {STORE_INFO.name}. All rights reserved.
@@ -224,5 +228,5 @@ export default function LandingPage({ onOpenLogin }: LandingPageProps) {
         </div>
       </footer>
     </div>
-  )
+  );
 }

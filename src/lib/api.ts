@@ -1,6 +1,13 @@
-import { supabase, isSupabaseConfigured } from './supabase'
-import type { Product, Category, ProductFilters, Order, OrderItem, PaymentMethod } from '@/types'
-import { CATEGORIES, DELIVERY_CONFIG } from '@/lib/constants'
+import { supabase, isSupabaseConfigured } from "./supabase";
+import type {
+  Product,
+  Category,
+  ProductFilters,
+  Order,
+  OrderItem,
+  PaymentMethod,
+} from "@/types";
+import { CATEGORIES, DELIVERY_CONFIG } from "@/lib/constants";
 
 // ============================================
 // MOCK DATA (Used when Supabase is not configured)
@@ -16,71 +23,3153 @@ const mockCategories: Category[] = CATEGORIES.map((cat, index) => ({
   is_active: true,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
-}))
+}));
 
 const mockProducts: Product[] = [
-  // Cooking Essentials
-  { id: 'p1', name: 'Cooking Oil 1L', slug: 'cooking-oil-1l', price: 89, old_price: 105, unit: 'bottle', image_emoji: '🫒', category_id: 'cat-1', stock_quantity: 50, is_available: true, is_featured: true, badge: 'sale', rating: 4.7, review_count: 256, created_at: '', updated_at: '' },
-  { id: 'p2', name: 'Jasmine Rice 5kg', slug: 'jasmine-rice-5kg', price: 285, old_price: 320, unit: 'sack', image_emoji: '🍚', category_id: 'cat-1', stock_quantity: 30, is_available: true, is_featured: true, badge: 'popular', rating: 4.9, review_count: 312, created_at: '', updated_at: '' },
-  { id: 'p3', name: 'Sugar 1kg', slug: 'sugar-1kg', price: 65, old_price: 72, unit: 'pack', image_emoji: '🧂', category_id: 'cat-1', stock_quantity: 40, is_available: true, is_featured: false, rating: 4.5, review_count: 89, created_at: '', updated_at: '' },
-  { id: 'p4', name: 'Salt 250g', slug: 'salt-250g', price: 15, unit: 'pack', image_emoji: '🧂', category_id: 'cat-1', stock_quantity: 100, is_available: true, is_featured: false, rating: 4.3, review_count: 45, created_at: '', updated_at: '' },
-  { id: 'p5', name: 'All-Purpose Flour 1kg', slug: 'flour-1kg', price: 55, old_price: 62, unit: 'pack', image_emoji: '🌾', category_id: 'cat-1', stock_quantity: 35, is_available: true, is_featured: false, rating: 4.6, review_count: 78, created_at: '', updated_at: '' },
+  // ============================================
+  // COOKING ESSENTIALS (cat-1)
+  // ============================================
+  {
+    id: "p1",
+    name: "Cooking Oil 1L",
+    slug: "cooking-oil-1l",
+    price: 89,
+    old_price: 105,
+    unit: "bottle",
+    image_emoji: "🫒",
+    category_id: "cat-1",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: true,
+    badge: "sale",
+    rating: 4.7,
+    review_count: 256,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p2",
+    name: "Cooking Oil 2L",
+    slug: "cooking-oil-2l",
+    price: 165,
+    old_price: 185,
+    unit: "bottle",
+    image_emoji: "🫒",
+    category_id: "cat-1",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 145,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p3",
+    name: "Jasmine Rice 5kg",
+    slug: "jasmine-rice-5kg",
+    price: 285,
+    old_price: 320,
+    unit: "sack",
+    image_emoji: "🍚",
+    category_id: "cat-1",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: true,
+    badge: "popular",
+    rating: 4.9,
+    review_count: 312,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p4",
+    name: "Jasmine Rice 25kg",
+    slug: "jasmine-rice-25kg",
+    price: 1350,
+    old_price: 1450,
+    unit: "sack",
+    image_emoji: "🍚",
+    category_id: "cat-1",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    rating: 4.9,
+    review_count: 189,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p5",
+    name: "Sugar 1kg",
+    slug: "sugar-1kg",
+    price: 65,
+    old_price: 72,
+    unit: "pack",
+    image_emoji: "🧂",
+    category_id: "cat-1",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p6",
+    name: "Brown Sugar 1kg",
+    slug: "brown-sugar-1kg",
+    price: 75,
+    old_price: 85,
+    unit: "pack",
+    image_emoji: "🧂",
+    category_id: "cat-1",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p7",
+    name: "Salt 250g",
+    slug: "salt-250g",
+    price: 15,
+    unit: "pack",
+    image_emoji: "🧂",
+    category_id: "cat-1",
+    stock_quantity: 100,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p8",
+    name: "Iodized Salt 1kg",
+    slug: "iodized-salt-1kg",
+    price: 35,
+    old_price: 40,
+    unit: "pack",
+    image_emoji: "🧂",
+    category_id: "cat-1",
+    stock_quantity: 60,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p9",
+    name: "All-Purpose Flour 1kg",
+    slug: "flour-1kg",
+    price: 55,
+    old_price: 62,
+    unit: "pack",
+    image_emoji: "🌾",
+    category_id: "cat-1",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p10",
+    name: "Cornstarch 250g",
+    slug: "cornstarch-250g",
+    price: 25,
+    old_price: 30,
+    unit: "pack",
+    image_emoji: "🌾",
+    category_id: "cat-1",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 34,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p11",
+    name: "Garlic 100g",
+    slug: "garlic-100g",
+    price: 25,
+    old_price: 30,
+    unit: "pack",
+    image_emoji: "🧄",
+    category_id: "cat-1",
+    stock_quantity: 80,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p12",
+    name: "Onion 250g",
+    slug: "onion-250g",
+    price: 35,
+    old_price: 40,
+    unit: "pack",
+    image_emoji: "🧅",
+    category_id: "cat-1",
+    stock_quantity: 70,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p13",
+    name: "Ginger 100g",
+    slug: "ginger-100g",
+    price: 20,
+    old_price: 25,
+    unit: "pack",
+    image_emoji: "🫚",
+    category_id: "cat-1",
+    stock_quantity: 60,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Cooking Essentials
+  {
+    id: "p14",
+    name: "Coconut Oil 500ml",
+    slug: "coconut-oil-500ml",
+    price: 95,
+    old_price: 110,
+    unit: "bottle",
+    image_emoji: "🥥",
+    category_id: "cat-1",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.6,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p15",
+    name: "Olive Oil 250ml",
+    slug: "olive-oil-250ml",
+    price: 185,
+    old_price: 210,
+    unit: "bottle",
+    image_emoji: "🫒",
+    category_id: "cat-1",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 34,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p16",
+    name: "Sesame Oil 150ml",
+    slug: "sesame-oil-150ml",
+    price: 75,
+    old_price: 85,
+    unit: "bottle",
+    image_emoji: "🫒",
+    category_id: "cat-1",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 28,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p17",
+    name: "Sticky Rice 2kg",
+    slug: "sticky-rice-2kg",
+    price: 145,
+    old_price: 165,
+    unit: "pack",
+    image_emoji: "🍚",
+    category_id: "cat-1",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p18",
+    name: "Brown Rice 2kg",
+    slug: "brown-rice-2kg",
+    price: 165,
+    old_price: 185,
+    unit: "pack",
+    image_emoji: "🍚",
+    category_id: "cat-1",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    badge: "hot",
+    rating: 4.7,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p19",
+    name: "Glutinous Rice 1kg",
+    slug: "glutinous-rice-1kg",
+    price: 85,
+    old_price: 95,
+    unit: "pack",
+    image_emoji: "🍚",
+    category_id: "cat-1",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 43,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p20",
+    name: "Muscovado Sugar 500g",
+    slug: "muscovado-sugar-500g",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🧂",
+    category_id: "cat-1",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 32,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p21",
+    name: "Rock Salt 500g",
+    slug: "rock-salt-500g",
+    price: 25,
+    old_price: 30,
+    unit: "pack",
+    image_emoji: "🧂",
+    category_id: "cat-1",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 28,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Eggs & Dairy
-  { id: 'p6', name: 'Fresh Eggs (30pcs)', slug: 'fresh-eggs-30', price: 195, old_price: 220, unit: 'tray', image_emoji: '🥚', category_id: 'cat-2', stock_quantity: 25, is_available: true, is_featured: true, badge: 'best-seller', rating: 4.8, review_count: 124, created_at: '', updated_at: '' },
-  { id: 'p7', name: 'Fresh Milk 1L', slug: 'fresh-milk-1l', price: 85, old_price: 95, unit: 'carton', image_emoji: '🥛', category_id: 'cat-2', stock_quantity: 20, is_available: true, is_featured: true, rating: 4.6, review_count: 78, created_at: '', updated_at: '' },
-  { id: 'p8', name: 'Butter 225g', slug: 'butter-225g', price: 95, old_price: 110, unit: 'pack', image_emoji: '🧈', category_id: 'cat-2', stock_quantity: 15, is_available: true, is_featured: false, badge: 'new', rating: 4.7, review_count: 56, created_at: '', updated_at: '' },
-  { id: 'p9', name: 'Cheese Slices (10pcs)', slug: 'cheese-slices', price: 85, old_price: 98, unit: 'pack', image_emoji: '🧀', category_id: 'cat-2', stock_quantity: 18, is_available: true, is_featured: false, rating: 4.5, review_count: 67, created_at: '', updated_at: '' },
-  { id: 'p10', name: 'Yogurt 125ml', slug: 'yogurt-125ml', price: 35, old_price: 42, unit: 'cup', image_emoji: '🥛', category_id: 'cat-2', stock_quantity: 30, is_available: true, is_featured: false, rating: 4.6, review_count: 89, created_at: '', updated_at: '' },
+  // ============================================
+  // EGGS & DAIRY (cat-2)
+  // ============================================
+  {
+    id: "p22",
+    name: "Fresh Eggs (30pcs)",
+    slug: "fresh-eggs-30",
+    price: 195,
+    old_price: 220,
+    unit: "tray",
+    image_emoji: "🥚",
+    category_id: "cat-2",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: true,
+    badge: "best-seller",
+    rating: 4.8,
+    review_count: 124,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p23",
+    name: "Fresh Eggs (12pcs)",
+    slug: "fresh-eggs-12",
+    price: 85,
+    old_price: 95,
+    unit: "dozen",
+    image_emoji: "🥚",
+    category_id: "cat-2",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p24",
+    name: "Fresh Milk 1L",
+    slug: "fresh-milk-1l",
+    price: 85,
+    old_price: 95,
+    unit: "carton",
+    image_emoji: "🥛",
+    category_id: "cat-2",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: true,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p25",
+    name: "Fresh Milk 250ml",
+    slug: "fresh-milk-250ml",
+    price: 28,
+    old_price: 32,
+    unit: "pack",
+    image_emoji: "🥛",
+    category_id: "cat-2",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p26",
+    name: "Butter 225g",
+    slug: "butter-225g",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🧈",
+    category_id: "cat-2",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.7,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p27",
+    name: "Margarine 250g",
+    slug: "margarine-250g",
+    price: 55,
+    old_price: 65,
+    unit: "tub",
+    image_emoji: "🧈",
+    category_id: "cat-2",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p28",
+    name: "Cheese Slices (10pcs)",
+    slug: "cheese-slices",
+    price: 85,
+    old_price: 98,
+    unit: "pack",
+    image_emoji: "🧀",
+    category_id: "cat-2",
+    stock_quantity: 18,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p29",
+    name: "Quickmelt Cheese 200g",
+    slug: "quickmelt-cheese",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🧀",
+    category_id: "cat-2",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p30",
+    name: "Yogurt 125ml",
+    slug: "yogurt-125ml",
+    price: 35,
+    old_price: 42,
+    unit: "cup",
+    image_emoji: "🥛",
+    category_id: "cat-2",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p31",
+    name: "Evaporated Milk 370ml",
+    slug: "evaporated-milk",
+    price: 45,
+    old_price: 52,
+    unit: "can",
+    image_emoji: "🥛",
+    category_id: "cat-2",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p32",
+    name: "Condensed Milk 300ml",
+    slug: "condensed-milk",
+    price: 55,
+    old_price: 62,
+    unit: "can",
+    image_emoji: "🥛",
+    category_id: "cat-2",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Eggs & Dairy
+  {
+    id: "p33",
+    name: "Salted Eggs (6pcs)",
+    slug: "salted-eggs-6pcs",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🥚",
+    category_id: "cat-2",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p34",
+    name: "Century Eggs (4pcs)",
+    slug: "century-eggs-4pcs",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🥚",
+    category_id: "cat-2",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p35",
+    name: "Quail Eggs (24pcs)",
+    slug: "quail-eggs-24pcs",
+    price: 75,
+    old_price: 85,
+    unit: "pack",
+    image_emoji: "🥚",
+    category_id: "cat-2",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.6,
+    review_count: 34,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Meat & Poultry
-  { id: 'p11', name: 'Pork Belly 1kg', slug: 'pork-belly-1kg', price: 380, old_price: 420, unit: 'kg', image_emoji: '🥩', category_id: 'cat-3', stock_quantity: 15, is_available: true, is_featured: true, badge: 'fresh', rating: 4.9, review_count: 89, created_at: '', updated_at: '' },
-  { id: 'p12', name: 'Whole Chicken', slug: 'whole-chicken', price: 220, old_price: 260, unit: 'kg', image_emoji: '🍗', category_id: 'cat-3', stock_quantity: 12, is_available: true, is_featured: true, badge: 'hot', rating: 4.8, review_count: 156, created_at: '', updated_at: '' },
-  { id: 'p13', name: 'Ground Beef 500g', slug: 'ground-beef-500g', price: 195, old_price: 220, unit: 'pack', image_emoji: '🥩', category_id: 'cat-3', stock_quantity: 10, is_available: true, is_featured: false, rating: 4.7, review_count: 67, created_at: '', updated_at: '' },
-  { id: 'p14', name: 'Pork Chop 500g', slug: 'pork-chop-500g', price: 165, old_price: 185, unit: 'pack', image_emoji: '🥩', category_id: 'cat-3', stock_quantity: 8, is_available: true, is_featured: false, rating: 4.6, review_count: 45, created_at: '', updated_at: '' },
-  { id: 'p15', name: 'Chicken Wings 500g', slug: 'chicken-wings-500g', price: 145, old_price: 165, unit: 'pack', image_emoji: '🍗', category_id: 'cat-3', stock_quantity: 14, is_available: true, is_featured: false, rating: 4.5, review_count: 78, created_at: '', updated_at: '' },
-  { id: 'p16', name: 'Tocino 250g', slug: 'tocino-250g', price: 95, old_price: 110, unit: 'pack', image_emoji: '🥩', category_id: 'cat-3', stock_quantity: 25, is_available: true, is_featured: false, badge: 'popular', rating: 4.8, review_count: 134, created_at: '', updated_at: '' },
-  { id: 'p17', name: 'Longganisa 250g', slug: 'longganisa-250g', price: 85, old_price: 98, unit: 'pack', image_emoji: '🌭', category_id: 'cat-3', stock_quantity: 30, is_available: true, is_featured: false, rating: 4.7, review_count: 112, created_at: '', updated_at: '' },
+  // ============================================
+  // MEAT & POULTRY (cat-3)
+  // ============================================
+  {
+    id: "p36",
+    name: "Pork Belly 1kg",
+    slug: "pork-belly-1kg",
+    price: 380,
+    old_price: 420,
+    unit: "kg",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: true,
+    badge: "fresh",
+    rating: 4.9,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p37",
+    name: "Pork Liempo 500g",
+    slug: "pork-liempo-500g",
+    price: 195,
+    old_price: 215,
+    unit: "pack",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.8,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p38",
+    name: "Whole Chicken",
+    slug: "whole-chicken",
+    price: 220,
+    old_price: 260,
+    unit: "kg",
+    image_emoji: "🍗",
+    category_id: "cat-3",
+    stock_quantity: 12,
+    is_available: true,
+    is_featured: true,
+    badge: "hot",
+    rating: 4.8,
+    review_count: 156,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p39",
+    name: "Chicken Breast 500g",
+    slug: "chicken-breast-500g",
+    price: 165,
+    old_price: 185,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-3",
+    stock_quantity: 18,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p40",
+    name: "Ground Beef 500g",
+    slug: "ground-beef-500g",
+    price: 195,
+    old_price: 220,
+    unit: "pack",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 10,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p41",
+    name: "Beef Cubes 500g",
+    slug: "beef-cubes-500g",
+    price: 245,
+    old_price: 275,
+    unit: "pack",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 8,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p42",
+    name: "Pork Chop 500g",
+    slug: "pork-chop-500g",
+    price: 165,
+    old_price: 185,
+    unit: "pack",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 8,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p43",
+    name: "Chicken Wings 500g",
+    slug: "chicken-wings-500g",
+    price: 145,
+    old_price: 165,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-3",
+    stock_quantity: 14,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p44",
+    name: "Chicken Drumstick 500g",
+    slug: "chicken-drumstick-500g",
+    price: 135,
+    old_price: 155,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-3",
+    stock_quantity: 16,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p45",
+    name: "Pork Kasim 1kg",
+    slug: "pork-kasim-1kg",
+    price: 320,
+    old_price: 360,
+    unit: "kg",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 10,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p46",
+    name: "Tocino 250g",
+    slug: "tocino-250g",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🥩",
+    category_id: "cat-3",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    badge: "popular",
+    rating: 4.8,
+    review_count: 134,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p47",
+    name: "Longganisa 250g",
+    slug: "longganisa-250g",
+    price: 85,
+    old_price: 98,
+    unit: "pack",
+    image_emoji: "🌭",
+    category_id: "cat-3",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 112,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Meat & Poultry
+  {
+    id: "p48",
+    name: "Bacon 250g",
+    slug: "bacon-250g",
+    price: 145,
+    old_price: 165,
+    unit: "pack",
+    image_emoji: "🥓",
+    category_id: "cat-3",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: true,
+    badge: "best-seller",
+    rating: 4.8,
+    review_count: 145,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p49",
+    name: "Ham 250g",
+    slug: "ham-250g",
+    price: 125,
+    old_price: 145,
+    unit: "pack",
+    image_emoji: "🍖",
+    category_id: "cat-3",
+    stock_quantity: 22,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Canned & Packaged
-  { id: 'p18', name: 'Corned Beef 260g', slug: 'corned-beef-260g', price: 65, old_price: 75, unit: 'can', image_emoji: '🥫', category_id: 'cat-4', stock_quantity: 40, is_available: true, is_featured: true, rating: 4.5, review_count: 98, created_at: '', updated_at: '' },
-  { id: 'p19', name: 'Sardines 155g', slug: 'sardines-155g', price: 25, old_price: 30, unit: 'can', image_emoji: '🐟', category_id: 'cat-4', stock_quantity: 60, is_available: true, is_featured: false, rating: 4.4, review_count: 134, created_at: '', updated_at: '' },
-  { id: 'p20', name: 'Instant Noodles', slug: 'instant-noodles', price: 12, old_price: 15, unit: 'pack', image_emoji: '🍜', category_id: 'cat-4', stock_quantity: 100, is_available: true, is_featured: false, rating: 4.5, review_count: 256, created_at: '', updated_at: '' },
-  { id: 'p21', name: 'Tuna Flakes 180g', slug: 'tuna-flakes-180g', price: 45, old_price: 52, unit: 'can', image_emoji: '🐟', category_id: 'cat-4', stock_quantity: 35, is_available: true, is_featured: false, rating: 4.6, review_count: 87, created_at: '', updated_at: '' },
-  { id: 'p22', name: 'Spam 340g', slug: 'spam-340g', price: 185, old_price: 210, unit: 'can', image_emoji: '🥫', category_id: 'cat-4', stock_quantity: 20, is_available: true, is_featured: false, badge: 'popular', rating: 4.7, review_count: 123, created_at: '', updated_at: '' },
+  // ============================================
+  // CANNED & PACKAGED (cat-4)
+  // ============================================
+  {
+    id: "p50",
+    name: "Corned Beef 260g",
+    slug: "corned-beef-260g",
+    price: 65,
+    old_price: 75,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: true,
+    rating: 4.5,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p51",
+    name: "Corned Beef 150g",
+    slug: "corned-beef-150g",
+    price: 42,
+    old_price: 48,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p52",
+    name: "Sardines 155g",
+    slug: "sardines-155g",
+    price: 25,
+    old_price: 30,
+    unit: "can",
+    image_emoji: "🐟",
+    category_id: "cat-4",
+    stock_quantity: 60,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 134,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p53",
+    name: "Sardines in Tomato Sauce",
+    slug: "sardines-tomato",
+    price: 28,
+    old_price: 32,
+    unit: "can",
+    image_emoji: "🐟",
+    category_id: "cat-4",
+    stock_quantity: 55,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p54",
+    name: "Instant Noodles",
+    slug: "instant-noodles",
+    price: 12,
+    old_price: 15,
+    unit: "pack",
+    image_emoji: "🍜",
+    category_id: "cat-4",
+    stock_quantity: 100,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 256,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p55",
+    name: "Cup Noodles",
+    slug: "cup-noodles",
+    price: 35,
+    old_price: 40,
+    unit: "cup",
+    image_emoji: "🍜",
+    category_id: "cat-4",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 134,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p56",
+    name: "Tuna Flakes 180g",
+    slug: "tuna-flakes-180g",
+    price: 45,
+    old_price: 52,
+    unit: "can",
+    image_emoji: "🐟",
+    category_id: "cat-4",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 87,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p57",
+    name: "Tuna Chunks 180g",
+    slug: "tuna-chunks-180g",
+    price: 55,
+    old_price: 62,
+    unit: "can",
+    image_emoji: "🐟",
+    category_id: "cat-4",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p58",
+    name: "Spam 340g",
+    slug: "spam-340g",
+    price: 185,
+    old_price: 210,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    badge: "popular",
+    rating: 4.7,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p59",
+    name: "Maling 397g",
+    slug: "maling-397g",
+    price: 125,
+    old_price: 145,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p60",
+    name: "Liver Spread 85g",
+    slug: "liver-spread-85g",
+    price: 32,
+    old_price: 38,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p61",
+    name: "Tomato Sauce 250g",
+    slug: "tomato-sauce-250g",
+    price: 25,
+    old_price: 30,
+    unit: "pack",
+    image_emoji: "🍅",
+    category_id: "cat-4",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p62",
+    name: "Spaghetti Pasta 500g",
+    slug: "spaghetti-pasta-500g",
+    price: 45,
+    old_price: 52,
+    unit: "pack",
+    image_emoji: "🍝",
+    category_id: "cat-4",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Canned & Packaged
+  {
+    id: "p63",
+    name: "Meat Loaf 170g",
+    slug: "meat-loaf-170g",
+    price: 45,
+    old_price: 52,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p64",
+    name: "Tuna Spread 85g",
+    slug: "tuna-spread-85g",
+    price: 38,
+    old_price: 45,
+    unit: "can",
+    image_emoji: "🐟",
+    category_id: "cat-4",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p65",
+    name: "Sardines Spanish Style",
+    slug: "sardines-spanish-style",
+    price: 35,
+    old_price: 42,
+    unit: "can",
+    image_emoji: "🐟",
+    category_id: "cat-4",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p66",
+    name: "Beef Loaf 150g",
+    slug: "beef-loaf-150g",
+    price: 52,
+    old_price: 60,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p67",
+    name: "Chicken Spread 85g",
+    slug: "chicken-spread-85g",
+    price: 35,
+    old_price: 42,
+    unit: "can",
+    image_emoji: "🍗",
+    category_id: "cat-4",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 34,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p68",
+    name: "Pork & Beans 230g",
+    slug: "pork-and-beans-230g",
+    price: 32,
+    old_price: 38,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p69",
+    name: "Baked Beans 230g",
+    slug: "baked-beans-230g",
+    price: 45,
+    old_price: 52,
+    unit: "can",
+    image_emoji: "🥫",
+    category_id: "cat-4",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p70",
+    name: "Coconut Milk 400ml",
+    slug: "coconut-milk-400ml",
+    price: 55,
+    old_price: 65,
+    unit: "can",
+    image_emoji: "🥥",
+    category_id: "cat-4",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    badge: "popular",
+    rating: 4.7,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p71",
+    name: "Coconut Cream 250ml",
+    slug: "coconut-cream-250ml",
+    price: 45,
+    old_price: 52,
+    unit: "can",
+    image_emoji: "🥥",
+    category_id: "cat-4",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p72",
+    name: "Pancit Canton Kalamansi",
+    slug: "pancit-canton",
+    price: 15,
+    old_price: 18,
+    unit: "pack",
+    image_emoji: "🍜",
+    category_id: "cat-4",
+    stock_quantity: 80,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 167,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p73",
+    name: "Yakisoba Noodles",
+    slug: "yakisoba-noodles",
+    price: 18,
+    old_price: 22,
+    unit: "pack",
+    image_emoji: "🍜",
+    category_id: "cat-4",
+    stock_quantity: 60,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Frozen Foods
-  { id: 'p23', name: 'Hotdog 500g', slug: 'hotdog-500g', price: 125, old_price: 145, unit: 'pack', image_emoji: '🌭', category_id: 'cat-5', stock_quantity: 25, is_available: true, is_featured: true, rating: 4.4, review_count: 89, created_at: '', updated_at: '' },
-  { id: 'p24', name: 'Chicken Nuggets 250g', slug: 'chicken-nuggets-250g', price: 95, old_price: 110, unit: 'pack', image_emoji: '🍗', category_id: 'cat-5', stock_quantity: 18, is_available: true, is_featured: false, rating: 4.5, review_count: 67, created_at: '', updated_at: '' },
-  { id: 'p25', name: 'Fish Fillet 500g', slug: 'fish-fillet-500g', price: 165, old_price: 185, unit: 'pack', image_emoji: '🐟', category_id: 'cat-5', stock_quantity: 12, is_available: true, is_featured: false, rating: 4.6, review_count: 45, created_at: '', updated_at: '' },
-  { id: 'p26', name: 'Ice Cream 1L', slug: 'ice-cream-1l', price: 145, old_price: 165, unit: 'tub', image_emoji: '🍦', category_id: 'cat-5', stock_quantity: 15, is_available: false, is_featured: false, rating: 4.7, review_count: 123, created_at: '', updated_at: '' },
+  // ============================================
+  // FROZEN FOODS (cat-5)
+  // ============================================
+  {
+    id: "p74",
+    name: "Hotdog 500g",
+    slug: "hotdog-500g",
+    price: 125,
+    old_price: 145,
+    unit: "pack",
+    image_emoji: "🌭",
+    category_id: "cat-5",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: true,
+    rating: 4.4,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p75",
+    name: "Hotdog Jumbo 500g",
+    slug: "hotdog-jumbo-500g",
+    price: 155,
+    old_price: 175,
+    unit: "pack",
+    image_emoji: "🌭",
+    category_id: "cat-5",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p76",
+    name: "Chicken Nuggets 250g",
+    slug: "chicken-nuggets-250g",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-5",
+    stock_quantity: 18,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p77",
+    name: "Chicken Nuggets 500g",
+    slug: "chicken-nuggets-500g",
+    price: 175,
+    old_price: 195,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-5",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p78",
+    name: "Fish Fillet 500g",
+    slug: "fish-fillet-500g",
+    price: 165,
+    old_price: 185,
+    unit: "pack",
+    image_emoji: "🐟",
+    category_id: "cat-5",
+    stock_quantity: 12,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p79",
+    name: "Bangus Boneless 400g",
+    slug: "bangus-boneless-400g",
+    price: 145,
+    old_price: 165,
+    unit: "pack",
+    image_emoji: "🐟",
+    category_id: "cat-5",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    badge: "fresh",
+    rating: 4.7,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p80",
+    name: "Pork Siomai 250g",
+    slug: "pork-siomai-250g",
+    price: 85,
+    old_price: 98,
+    unit: "pack",
+    image_emoji: "🥟",
+    category_id: "cat-5",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p81",
+    name: "Beef Siomai 250g",
+    slug: "beef-siomai-250g",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🥟",
+    category_id: "cat-5",
+    stock_quantity: 18,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p82",
+    name: "Ice Cream 1L",
+    slug: "ice-cream-1l",
+    price: 145,
+    old_price: 165,
+    unit: "tub",
+    image_emoji: "🍦",
+    category_id: "cat-5",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p83",
+    name: "Ice Cream Sandwich",
+    slug: "ice-cream-sandwich",
+    price: 25,
+    old_price: 30,
+    unit: "pc",
+    image_emoji: "🍦",
+    category_id: "cat-5",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Frozen Foods
+  {
+    id: "p84",
+    name: "Cheese Hotdog 500g",
+    slug: "cheese-hotdog-500g",
+    price: 145,
+    old_price: 165,
+    unit: "pack",
+    image_emoji: "🌭",
+    category_id: "cat-5",
+    stock_quantity: 22,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p85",
+    name: "Chicken Hotdog 500g",
+    slug: "chicken-hotdog-500g",
+    price: 115,
+    old_price: 130,
+    unit: "pack",
+    image_emoji: "🌭",
+    category_id: "cat-5",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p86",
+    name: "Chicken Popcorn 250g",
+    slug: "chicken-popcorn-250g",
+    price: 85,
+    old_price: 98,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-5",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p87",
+    name: "Chicken Tenders 300g",
+    slug: "chicken-tenders-300g",
+    price: 125,
+    old_price: 145,
+    unit: "pack",
+    image_emoji: "🍗",
+    category_id: "cat-5",
+    stock_quantity: 18,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p88",
+    name: "Fish Balls 500g",
+    slug: "fish-balls-500g",
+    price: 75,
+    old_price: 85,
+    unit: "pack",
+    image_emoji: "🐟",
+    category_id: "cat-5",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    badge: "popular",
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p89",
+    name: "Squid Balls 500g",
+    slug: "squid-balls-500g",
+    price: 85,
+    old_price: 98,
+    unit: "pack",
+    image_emoji: "🦑",
+    category_id: "cat-5",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p90",
+    name: "Kikiam 500g",
+    slug: "kikiam-500g",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🥢",
+    category_id: "cat-5",
+    stock_quantity: 22,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Bakery & Snacks
-  { id: 'p27', name: 'Pandesal (10pcs)', slug: 'pandesal-10pcs', price: 50, old_price: 60, unit: 'pack', image_emoji: '🥖', category_id: 'cat-6', stock_quantity: 30, is_available: true, is_featured: true, badge: 'fresh', rating: 4.7, review_count: 234, created_at: '', updated_at: '' },
-  { id: 'p28', name: 'Sliced Bread', slug: 'sliced-bread', price: 55, old_price: 62, unit: 'loaf', image_emoji: '🍞', category_id: 'cat-6', stock_quantity: 25, is_available: true, is_featured: false, rating: 4.5, review_count: 156, created_at: '', updated_at: '' },
-  { id: 'p29', name: 'Potato Chips 150g', slug: 'potato-chips-150g', price: 65, old_price: 75, unit: 'pack', image_emoji: '🥔', category_id: 'cat-6', stock_quantity: 40, is_available: true, is_featured: false, rating: 4.4, review_count: 189, created_at: '', updated_at: '' },
-  { id: 'p30', name: 'Cookies 200g', slug: 'cookies-200g', price: 45, old_price: 52, unit: 'pack', image_emoji: '🍪', category_id: 'cat-6', stock_quantity: 35, is_available: true, is_featured: false, rating: 4.6, review_count: 98, created_at: '', updated_at: '' },
+  // ============================================
+  // BAKERY & SNACKS (cat-6)
+  // ============================================
+  {
+    id: "p91",
+    name: "Pandesal (10pcs)",
+    slug: "pandesal-10pcs",
+    price: 50,
+    old_price: 60,
+    unit: "pack",
+    image_emoji: "🥖",
+    category_id: "cat-6",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: true,
+    badge: "fresh",
+    rating: 4.7,
+    review_count: 234,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p92",
+    name: "Pandesal (20pcs)",
+    slug: "pandesal-20pcs",
+    price: 95,
+    old_price: 110,
+    unit: "pack",
+    image_emoji: "🥖",
+    category_id: "cat-6",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 156,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p93",
+    name: "Sliced Bread",
+    slug: "sliced-bread",
+    price: 55,
+    old_price: 62,
+    unit: "loaf",
+    image_emoji: "🍞",
+    category_id: "cat-6",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 156,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p94",
+    name: "Whole Wheat Bread",
+    slug: "whole-wheat-bread",
+    price: 75,
+    old_price: 85,
+    unit: "loaf",
+    image_emoji: "🍞",
+    category_id: "cat-6",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p95",
+    name: "Potato Chips 150g",
+    slug: "potato-chips-150g",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🥔",
+    category_id: "cat-6",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 189,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p96",
+    name: "Potato Chips 60g",
+    slug: "potato-chips-60g",
+    price: 28,
+    old_price: 32,
+    unit: "pack",
+    image_emoji: "🥔",
+    category_id: "cat-6",
+    stock_quantity: 60,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 134,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p97",
+    name: "Cookies 200g",
+    slug: "cookies-200g",
+    price: 45,
+    old_price: 52,
+    unit: "pack",
+    image_emoji: "🍪",
+    category_id: "cat-6",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p98",
+    name: "Oreo 133g",
+    slug: "oreo-133g",
+    price: 55,
+    old_price: 62,
+    unit: "pack",
+    image_emoji: "🍪",
+    category_id: "cat-6",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 145,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p99",
+    name: "Crackers 200g",
+    slug: "crackers-200g",
+    price: 35,
+    old_price: 42,
+    unit: "pack",
+    image_emoji: "🍘",
+    category_id: "cat-6",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p100",
+    name: "Chocolate Bar 50g",
+    slug: "chocolate-bar-50g",
+    price: 45,
+    old_price: 52,
+    unit: "pc",
+    image_emoji: "🍫",
+    category_id: "cat-6",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.8,
+    review_count: 167,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p101",
+    name: "Ensaymada (5pcs)",
+    slug: "ensaymada-5pcs",
+    price: 75,
+    old_price: 85,
+    unit: "pack",
+    image_emoji: "🥐",
+    category_id: "cat-6",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Bakery & Snacks
+  {
+    id: "p102",
+    name: "BBQ Chips 150g",
+    slug: "bbq-chips-150g",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🥔",
+    category_id: "cat-6",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p103",
+    name: "Cheese Chips 150g",
+    slug: "cheese-chips-150g",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🥔",
+    category_id: "cat-6",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p104",
+    name: "Sour Cream Chips 150g",
+    slug: "sour-cream-chips-150g",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🥔",
+    category_id: "cat-6",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p105",
+    name: "Corn Chips 150g",
+    slug: "corn-chips-150g",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🌽",
+    category_id: "cat-6",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p106",
+    name: "Cheese Ring 100g",
+    slug: "cheese-ring-100g",
+    price: 35,
+    old_price: 42,
+    unit: "pack",
+    image_emoji: "🧀",
+    category_id: "cat-6",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p107",
+    name: "Pretzels 200g",
+    slug: "pretzels-200g",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🥨",
+    category_id: "cat-6",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p108",
+    name: "Popcorn 100g",
+    slug: "popcorn-100g",
+    price: 45,
+    old_price: 52,
+    unit: "pack",
+    image_emoji: "🍿",
+    category_id: "cat-6",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p109",
+    name: "Wafer Sticks 200g",
+    slug: "wafer-sticks-200g",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🍫",
+    category_id: "cat-6",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p110",
+    name: "Cream-O 330g",
+    slug: "cream-o-330g",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🍪",
+    category_id: "cat-6",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p111",
+    name: "Skyflakes 200g",
+    slug: "skyflakes-200g",
+    price: 45,
+    old_price: 52,
+    unit: "pack",
+    image_emoji: "🍘",
+    category_id: "cat-6",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 112,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p112",
+    name: "Piattos 85g",
+    slug: "piattos-85g",
+    price: 45,
+    old_price: 52,
+    unit: "pack",
+    image_emoji: "🥔",
+    category_id: "cat-6",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    badge: "hot",
+    rating: 4.6,
+    review_count: 134,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Beverages
-  { id: 'p31', name: 'Coke 1.5L', slug: 'coke-1.5l', price: 65, old_price: 75, unit: 'bottle', image_emoji: '🥤', category_id: 'cat-7', stock_quantity: 50, is_available: true, is_featured: true, rating: 4.6, review_count: 189, created_at: '', updated_at: '' },
-  { id: 'p32', name: 'Coffee 3-in-1 (10pcs)', slug: 'coffee-3in1-10pcs', price: 80, old_price: 95, unit: 'pack', image_emoji: '☕', category_id: 'cat-7', stock_quantity: 45, is_available: true, is_featured: false, rating: 4.6, review_count: 234, created_at: '', updated_at: '' },
-  { id: 'p33', name: 'Orange Juice 1L', slug: 'orange-juice-1l', price: 85, old_price: 98, unit: 'carton', image_emoji: '🍊', category_id: 'cat-7', stock_quantity: 20, is_available: true, is_featured: false, rating: 4.5, review_count: 67, created_at: '', updated_at: '' },
-  { id: 'p34', name: 'Bottled Water 500ml (6-pack)', slug: 'water-500ml-6pack', price: 45, unit: 'pack', image_emoji: '💧', category_id: 'cat-7', stock_quantity: 60, is_available: true, is_featured: false, rating: 4.3, review_count: 45, created_at: '', updated_at: '' },
+  // ============================================
+  // BEVERAGES (cat-7)
+  // ============================================
+  {
+    id: "p113",
+    name: "Coke 1.5L",
+    slug: "coke-1.5l",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: true,
+    rating: 4.6,
+    review_count: 189,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p114",
+    name: "Coke 330ml",
+    slug: "coke-330ml",
+    price: 25,
+    old_price: 30,
+    unit: "can",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 80,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 145,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p115",
+    name: "Sprite 1.5L",
+    slug: "sprite-1.5l",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 134,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p116",
+    name: "Royal 1.5L",
+    slug: "royal-1.5l",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p117",
+    name: "Coffee 3-in-1 (10pcs)",
+    slug: "coffee-3in1-10pcs",
+    price: 80,
+    old_price: 95,
+    unit: "pack",
+    image_emoji: "☕",
+    category_id: "cat-7",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 234,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p118",
+    name: "Coffee 3-in-1 (30pcs)",
+    slug: "coffee-3in1-30pcs",
+    price: 225,
+    old_price: 260,
+    unit: "pack",
+    image_emoji: "☕",
+    category_id: "cat-7",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 156,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p119",
+    name: "Orange Juice 1L",
+    slug: "orange-juice-1l",
+    price: 85,
+    old_price: 98,
+    unit: "carton",
+    image_emoji: "🍊",
+    category_id: "cat-7",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p120",
+    name: "Apple Juice 1L",
+    slug: "apple-juice-1l",
+    price: 85,
+    old_price: 98,
+    unit: "carton",
+    image_emoji: "🍎",
+    category_id: "cat-7",
+    stock_quantity: 18,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p121",
+    name: "Bottled Water 500ml (6-pack)",
+    slug: "water-500ml-6pack",
+    price: 45,
+    unit: "pack",
+    image_emoji: "💧",
+    category_id: "cat-7",
+    stock_quantity: 60,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p122",
+    name: "Bottled Water 1L (6-pack)",
+    slug: "water-1l-6pack",
+    price: 75,
+    old_price: 85,
+    unit: "pack",
+    image_emoji: "💧",
+    category_id: "cat-7",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p123",
+    name: "Iced Tea 1L",
+    slug: "iced-tea-1l",
+    price: 45,
+    old_price: 52,
+    unit: "bottle",
+    image_emoji: "🧊",
+    category_id: "cat-7",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p124",
+    name: "Powdered Juice 25g (10pcs)",
+    slug: "powdered-juice-10pcs",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🧃",
+    category_id: "cat-7",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Beverages
+  {
+    id: "p125",
+    name: "Pepsi 1.5L",
+    slug: "pepsi-1.5l",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p126",
+    name: "Mountain Dew 1.5L",
+    slug: "mountain-dew-1.5l",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p127",
+    name: "7-Up 1.5L",
+    slug: "seven-up-1.5l",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🥤",
+    category_id: "cat-7",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p128",
+    name: "Gatorade 500ml",
+    slug: "gatorade-500ml",
+    price: 45,
+    old_price: 52,
+    unit: "bottle",
+    image_emoji: "🏃",
+    category_id: "cat-7",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    badge: "popular",
+    rating: 4.6,
+    review_count: 112,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p129",
+    name: "Pocari Sweat 500ml",
+    slug: "pocari-sweat-500ml",
+    price: 42,
+    old_price: 48,
+    unit: "bottle",
+    image_emoji: "💧",
+    category_id: "cat-7",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p130",
+    name: "Pineapple Juice 1L",
+    slug: "pineapple-juice-1l",
+    price: 75,
+    old_price: 85,
+    unit: "carton",
+    image_emoji: "🍍",
+    category_id: "cat-7",
+    stock_quantity: 28,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p131",
+    name: "Soy Milk 1L",
+    slug: "soy-milk-1l",
+    price: 65,
+    old_price: 75,
+    unit: "carton",
+    image_emoji: "🥛",
+    category_id: "cat-7",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p132",
+    name: "Yakult 5-pack",
+    slug: "yakult-5pack",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🥛",
+    category_id: "cat-7",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 112,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Condiments & Sauces
-  { id: 'p35', name: 'Soy Sauce 1L', slug: 'soy-sauce-1l', price: 55, old_price: 65, unit: 'bottle', image_emoji: '🫙', category_id: 'cat-8', stock_quantity: 35, is_available: true, is_featured: true, rating: 4.9, review_count: 145, created_at: '', updated_at: '' },
-  { id: 'p36', name: 'Vinegar 1L', slug: 'vinegar-1l', price: 35, old_price: 42, unit: 'bottle', image_emoji: '🍶', category_id: 'cat-8', stock_quantity: 40, is_available: true, is_featured: false, rating: 4.8, review_count: 98, created_at: '', updated_at: '' },
-  { id: 'p37', name: 'Fish Sauce 750ml', slug: 'fish-sauce-750ml', price: 45, old_price: 52, unit: 'bottle', image_emoji: '🥫', category_id: 'cat-8', stock_quantity: 30, is_available: true, is_featured: false, rating: 4.7, review_count: 87, created_at: '', updated_at: '' },
-  { id: 'p38', name: 'Ketchup 320g', slug: 'ketchup-320g', price: 45, old_price: 52, unit: 'bottle', image_emoji: '🍅', category_id: 'cat-8', stock_quantity: 25, is_available: true, is_featured: false, rating: 4.5, review_count: 76, created_at: '', updated_at: '' },
-  { id: 'p39', name: 'Mayonnaise 220ml', slug: 'mayonnaise-220ml', price: 55, old_price: 65, unit: 'jar', image_emoji: '🥫', category_id: 'cat-8', stock_quantity: 20, is_available: true, is_featured: false, rating: 4.6, review_count: 89, created_at: '', updated_at: '' },
+  // ============================================
+  // CONDIMENTS & SAUCES (cat-8)
+  // ============================================
+  {
+    id: "p133",
+    name: "Soy Sauce 1L",
+    slug: "soy-sauce-1l",
+    price: 55,
+    old_price: 65,
+    unit: "bottle",
+    image_emoji: "🫙",
+    category_id: "cat-8",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: true,
+    rating: 4.9,
+    review_count: 145,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p134",
+    name: "Soy Sauce 500ml",
+    slug: "soy-sauce-500ml",
+    price: 32,
+    old_price: 38,
+    unit: "bottle",
+    image_emoji: "🫙",
+    category_id: "cat-8",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.8,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p135",
+    name: "Vinegar 1L",
+    slug: "vinegar-1l",
+    price: 35,
+    old_price: 42,
+    unit: "bottle",
+    image_emoji: "🍶",
+    category_id: "cat-8",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.8,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p136",
+    name: "Vinegar 500ml",
+    slug: "vinegar-500ml",
+    price: 22,
+    old_price: 26,
+    unit: "bottle",
+    image_emoji: "🍶",
+    category_id: "cat-8",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p137",
+    name: "Fish Sauce 750ml",
+    slug: "fish-sauce-750ml",
+    price: 45,
+    old_price: 52,
+    unit: "bottle",
+    image_emoji: "🥫",
+    category_id: "cat-8",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 87,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p138",
+    name: "Fish Sauce 350ml",
+    slug: "fish-sauce-350ml",
+    price: 28,
+    old_price: 32,
+    unit: "bottle",
+    image_emoji: "🥫",
+    category_id: "cat-8",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p139",
+    name: "Ketchup 320g",
+    slug: "ketchup-320g",
+    price: 45,
+    old_price: 52,
+    unit: "bottle",
+    image_emoji: "🍅",
+    category_id: "cat-8",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 76,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p140",
+    name: "Ketchup 550g",
+    slug: "ketchup-550g",
+    price: 75,
+    old_price: 85,
+    unit: "bottle",
+    image_emoji: "🍅",
+    category_id: "cat-8",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p141",
+    name: "Mayonnaise 220ml",
+    slug: "mayonnaise-220ml",
+    price: 55,
+    old_price: 65,
+    unit: "jar",
+    image_emoji: "🥫",
+    category_id: "cat-8",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p142",
+    name: "Mayonnaise 470ml",
+    slug: "mayonnaise-470ml",
+    price: 115,
+    old_price: 130,
+    unit: "jar",
+    image_emoji: "🥫",
+    category_id: "cat-8",
+    stock_quantity: 15,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p143",
+    name: "Oyster Sauce 300ml",
+    slug: "oyster-sauce-300ml",
+    price: 55,
+    old_price: 62,
+    unit: "bottle",
+    image_emoji: "🫙",
+    category_id: "cat-8",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p144",
+    name: "Hot Sauce 90ml",
+    slug: "hot-sauce-90ml",
+    price: 35,
+    old_price: 42,
+    unit: "bottle",
+    image_emoji: "🌶️",
+    category_id: "cat-8",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p145",
+    name: "Banana Ketchup 320g",
+    slug: "banana-ketchup-320g",
+    price: 42,
+    old_price: 48,
+    unit: "bottle",
+    image_emoji: "🍌",
+    category_id: "cat-8",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Condiments & Sauces
+  {
+    id: "p146",
+    name: "Dark Soy Sauce 500ml",
+    slug: "dark-soy-sauce-500ml",
+    price: 45,
+    old_price: 52,
+    unit: "bottle",
+    image_emoji: "🫙",
+    category_id: "cat-8",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p147",
+    name: "Sweet Soy Sauce 300ml",
+    slug: "sweet-soy-sauce-300ml",
+    price: 55,
+    old_price: 65,
+    unit: "bottle",
+    image_emoji: "🫙",
+    category_id: "cat-8",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p148",
+    name: "Cane Vinegar 1L",
+    slug: "cane-vinegar-1l",
+    price: 42,
+    old_price: 48,
+    unit: "bottle",
+    image_emoji: "🍶",
+    category_id: "cat-8",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p149",
+    name: "Coconut Vinegar 500ml",
+    slug: "coconut-vinegar-500ml",
+    price: 35,
+    old_price: 42,
+    unit: "bottle",
+    image_emoji: "🥥",
+    category_id: "cat-8",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p150",
+    name: "Peanut Butter 250g",
+    slug: "peanut-butter-250g",
+    price: 85,
+    old_price: 98,
+    unit: "jar",
+    image_emoji: "🥜",
+    category_id: "cat-8",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p151",
+    name: "Nutella 200g",
+    slug: "nutella-200g",
+    price: 185,
+    old_price: 210,
+    unit: "jar",
+    image_emoji: "🍫",
+    category_id: "cat-8",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: true,
+    badge: "best-seller",
+    rating: 4.9,
+    review_count: 178,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p152",
+    name: "Strawberry Jam 250g",
+    slug: "strawberry-jam-250g",
+    price: 75,
+    old_price: 85,
+    unit: "jar",
+    image_emoji: "🍓",
+    category_id: "cat-8",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p153",
+    name: "Honey 250ml",
+    slug: "honey-250ml",
+    price: 125,
+    old_price: 145,
+    unit: "bottle",
+    image_emoji: "🍯",
+    category_id: "cat-8",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
 
-  // Household Essentials
-  { id: 'p40', name: 'Dish Soap 500ml', slug: 'dish-soap-500ml', price: 45, old_price: 52, unit: 'bottle', image_emoji: '🧴', category_id: 'cat-9', stock_quantity: 40, is_available: true, is_featured: false, rating: 4.5, review_count: 67, created_at: '', updated_at: '' },
-  { id: 'p41', name: 'Laundry Detergent 1kg', slug: 'laundry-detergent-1kg', price: 85, old_price: 98, unit: 'pack', image_emoji: '🧺', category_id: 'cat-9', stock_quantity: 30, is_available: true, is_featured: true, rating: 4.6, review_count: 123, created_at: '', updated_at: '' },
-  { id: 'p42', name: 'Toilet Paper (4 rolls)', slug: 'toilet-paper-4rolls', price: 65, old_price: 75, unit: 'pack', image_emoji: '🧻', category_id: 'cat-9', stock_quantity: 50, is_available: true, is_featured: false, rating: 4.4, review_count: 89, created_at: '', updated_at: '' },
-  { id: 'p43', name: 'Garbage Bags (10pcs)', slug: 'garbage-bags-10pcs', price: 35, old_price: 42, unit: 'pack', image_emoji: '🗑️', category_id: 'cat-9', stock_quantity: 45, is_available: true, is_featured: false, rating: 4.3, review_count: 56, created_at: '', updated_at: '' },
-  { id: 'p44', name: 'Alcohol 500ml', slug: 'alcohol-500ml', price: 85, old_price: 95, unit: 'bottle', image_emoji: '🧴', category_id: 'cat-9', stock_quantity: 40, is_available: true, is_featured: false, rating: 4.7, review_count: 123, created_at: '', updated_at: '' },
-]
+  // ============================================
+  // HOUSEHOLD ESSENTIALS (cat-9)
+  // ============================================
+  {
+    id: "p154",
+    name: "Dish Soap 500ml",
+    slug: "dish-soap-500ml",
+    price: 45,
+    old_price: 52,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p155",
+    name: "Dish Soap 250ml",
+    slug: "dish-soap-250ml",
+    price: 28,
+    old_price: 32,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p156",
+    name: "Laundry Detergent 1kg",
+    slug: "laundry-detergent-1kg",
+    price: 85,
+    old_price: 98,
+    unit: "pack",
+    image_emoji: "🧺",
+    category_id: "cat-9",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: true,
+    rating: 4.6,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p157",
+    name: "Laundry Detergent 500g",
+    slug: "laundry-detergent-500g",
+    price: 48,
+    old_price: 55,
+    unit: "pack",
+    image_emoji: "🧺",
+    category_id: "cat-9",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 98,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p158",
+    name: "Fabric Conditioner 900ml",
+    slug: "fabric-conditioner-900ml",
+    price: 95,
+    old_price: 110,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 87,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p159",
+    name: "Fabric Conditioner 450ml",
+    slug: "fabric-conditioner-450ml",
+    price: 55,
+    old_price: 62,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p160",
+    name: "Toilet Paper (4 rolls)",
+    slug: "toilet-paper-4rolls",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🧻",
+    category_id: "cat-9",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p161",
+    name: "Toilet Paper (12 rolls)",
+    slug: "toilet-paper-12rolls",
+    price: 175,
+    old_price: 195,
+    unit: "pack",
+    image_emoji: "🧻",
+    category_id: "cat-9",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p162",
+    name: "Garbage Bags (10pcs)",
+    slug: "garbage-bags-10pcs",
+    price: 35,
+    old_price: 42,
+    unit: "pack",
+    image_emoji: "🗑️",
+    category_id: "cat-9",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p163",
+    name: "Garbage Bags (20pcs)",
+    slug: "garbage-bags-20pcs",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🗑️",
+    category_id: "cat-9",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p164",
+    name: "All-Purpose Cleaner 500ml",
+    slug: "all-purpose-cleaner-500ml",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🧹",
+    category_id: "cat-9",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p165",
+    name: "Bleach 1L",
+    slug: "bleach-1l",
+    price: 55,
+    old_price: 62,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p166",
+    name: "Alcohol 500ml",
+    slug: "alcohol-500ml",
+    price: 85,
+    old_price: 95,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.7,
+    review_count: 123,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p167",
+    name: "Hand Soap 250ml",
+    slug: "hand-soap-250ml",
+    price: 55,
+    old_price: 62,
+    unit: "bottle",
+    image_emoji: "🧼",
+    category_id: "cat-9",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  // New Household Essentials
+  {
+    id: "p168",
+    name: "Liquid Detergent 1L",
+    slug: "liquid-detergent-1l",
+    price: 125,
+    old_price: 145,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p169",
+    name: "Detergent Bar 380g",
+    slug: "detergent-bar-380g",
+    price: 28,
+    old_price: 32,
+    unit: "bar",
+    image_emoji: "🧼",
+    category_id: "cat-9",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p170",
+    name: "Bleach 500ml",
+    slug: "bleach-500ml",
+    price: 32,
+    old_price: 38,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 40,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p171",
+    name: "Color Safe Bleach 900ml",
+    slug: "color-safe-bleach-900ml",
+    price: 75,
+    old_price: 85,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p172",
+    name: "Downy 900ml",
+    slug: "downy-900ml",
+    price: 115,
+    old_price: 130,
+    unit: "bottle",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 22,
+    is_available: true,
+    is_featured: false,
+    badge: "popular",
+    rating: 4.7,
+    review_count: 112,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p173",
+    name: "Bathroom Cleaner 500ml",
+    slug: "bathroom-cleaner-500ml",
+    price: 75,
+    old_price: 85,
+    unit: "bottle",
+    image_emoji: "🚿",
+    category_id: "cat-9",
+    stock_quantity: 28,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p174",
+    name: "Glass Cleaner 500ml",
+    slug: "glass-cleaner-500ml",
+    price: 65,
+    old_price: 75,
+    unit: "bottle",
+    image_emoji: "🪟",
+    category_id: "cat-9",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p175",
+    name: "Floor Cleaner 1L",
+    slug: "floor-cleaner-1l",
+    price: 85,
+    old_price: 98,
+    unit: "bottle",
+    image_emoji: "🧹",
+    category_id: "cat-9",
+    stock_quantity: 25,
+    is_available: true,
+    is_featured: false,
+    rating: 4.5,
+    review_count: 67,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p176",
+    name: "Disinfectant Spray 400ml",
+    slug: "disinfectant-spray-400ml",
+    price: 145,
+    old_price: 165,
+    unit: "can",
+    image_emoji: "🧴",
+    category_id: "cat-9",
+    stock_quantity: 20,
+    is_available: true,
+    is_featured: false,
+    badge: "new",
+    rating: 4.6,
+    review_count: 89,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p177",
+    name: "Paper Towel 2 rolls",
+    slug: "paper-towel-2rolls",
+    price: 65,
+    old_price: 75,
+    unit: "pack",
+    image_emoji: "🧻",
+    category_id: "cat-9",
+    stock_quantity: 30,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p178",
+    name: "Wet Wipes 80pcs",
+    slug: "wet-wipes-80pcs",
+    price: 75,
+    old_price: 85,
+    unit: "pack",
+    image_emoji: "🧻",
+    category_id: "cat-9",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.6,
+    review_count: 78,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p179",
+    name: "Sponge 3pcs",
+    slug: "sponge-3pcs",
+    price: 35,
+    old_price: 42,
+    unit: "pack",
+    image_emoji: "🧽",
+    category_id: "cat-9",
+    stock_quantity: 50,
+    is_available: true,
+    is_featured: false,
+    rating: 4.3,
+    review_count: 45,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p180",
+    name: "Steel Wool 6pcs",
+    slug: "steel-wool-6pcs",
+    price: 25,
+    old_price: 30,
+    unit: "pack",
+    image_emoji: "🧽",
+    category_id: "cat-9",
+    stock_quantity: 45,
+    is_available: true,
+    is_featured: false,
+    rating: 4.2,
+    review_count: 34,
+    created_at: "",
+    updated_at: "",
+  },
+  {
+    id: "p181",
+    name: "Trash Bags Large 10pcs",
+    slug: "trash-bags-large-10pcs",
+    price: 55,
+    old_price: 65,
+    unit: "pack",
+    image_emoji: "🗑️",
+    category_id: "cat-9",
+    stock_quantity: 35,
+    is_available: true,
+    is_featured: false,
+    rating: 4.4,
+    review_count: 56,
+    created_at: "",
+    updated_at: "",
+  },
+];
 
 // ============================================
 // CATEGORY API
@@ -91,62 +3180,64 @@ const mockProducts: Product[] = [
  */
 export async function getCategories(): Promise<Category[]> {
   if (!isSupabaseConfigured()) {
-    return mockCategories
+    return mockCategories;
   }
 
   try {
     const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('is_active', true)
-      .order('sort_order')
+      .from("categories")
+      .select("*")
+      .eq("is_active", true)
+      .order("sort_order");
 
-    if (error) throw error
-    
+    if (error) throw error;
+
     // Add item_count from products
     const categoriesWithCount = await Promise.all(
       (data || []).map(async (cat) => {
         const { count } = await supabase
-          .from('products')
-          .select('*', { count: 'exact', head: true })
-          .eq('category_id', cat.id)
-          .eq('is_available', true)
-        
+          .from("products")
+          .select("*", { count: "exact", head: true })
+          .eq("category_id", cat.id)
+          .eq("is_available", true);
+
         return {
           ...cat,
           item_count: count || 0,
-        } as Category
-      })
-    )
+        } as Category;
+      }),
+    );
 
-    return categoriesWithCount
+    return categoriesWithCount;
   } catch (error) {
-    console.error('Error fetching categories:', error)
-    return mockCategories
+    console.error("Error fetching categories:", error);
+    return mockCategories;
   }
 }
 
 /**
  * Get category by slug
  */
-export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+export async function getCategoryBySlug(
+  slug: string,
+): Promise<Category | null> {
   if (!isSupabaseConfigured()) {
-    return mockCategories.find((cat) => cat.slug === slug) || null
+    return mockCategories.find((cat) => cat.slug === slug) || null;
   }
 
   try {
     const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .eq('slug', slug)
-      .eq('is_active', true)
-      .single()
+      .from("categories")
+      .select("*")
+      .eq("slug", slug)
+      .eq("is_active", true)
+      .single();
 
-    if (error) throw error
-    return data as Category
+    if (error) throw error;
+    return data as Category;
   } catch (error) {
-    console.error('Error fetching category:', error)
-    return mockCategories.find((cat) => cat.slug === slug) || null
+    console.error("Error fetching category:", error);
+    return mockCategories.find((cat) => cat.slug === slug) || null;
   }
 }
 
@@ -157,139 +3248,148 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
 /**
  * Get products with optional filters
  */
-export async function getProducts(filters?: ProductFilters): Promise<Product[]> {
+export async function getProducts(
+  filters?: ProductFilters,
+): Promise<Product[]> {
   if (!isSupabaseConfigured()) {
-    return filterMockProducts(filters)
+    return filterMockProducts(filters);
   }
 
   try {
-    let query = supabase
-      .from('products')
-      .select(`
+    let query = supabase.from("products").select(`
         *,
         category:categories(id, name, slug, icon)
-      `)
+      `);
 
     // Apply filters
     if (filters?.categorySlug) {
-      const category = await getCategoryBySlug(filters.categorySlug)
+      const category = await getCategoryBySlug(filters.categorySlug);
       if (category) {
-        query = query.eq('category_id', category.id)
+        query = query.eq("category_id", category.id);
       }
     }
 
     if (filters?.search) {
-      query = query.ilike('name', `%${filters.search}%`)
+      query = query.ilike("name", `%${filters.search}%`);
     }
 
     if (filters?.isAvailable !== undefined) {
-      query = query.eq('is_available', filters.isAvailable)
+      query = query.eq("is_available", filters.isAvailable);
     }
 
     if (filters?.isFeatured) {
-      query = query.eq('is_featured', true)
+      query = query.eq("is_featured", true);
     }
 
     if (filters?.badge) {
-      query = query.eq('badge', filters.badge)
+      query = query.eq("badge", filters.badge);
     }
 
     if (filters?.minPrice !== undefined) {
-      query = query.gte('price', filters.minPrice)
+      query = query.gte("price", filters.minPrice);
     }
 
     if (filters?.maxPrice !== undefined) {
-      query = query.lte('price', filters.maxPrice)
+      query = query.lte("price", filters.maxPrice);
     }
 
     // Sorting
     switch (filters?.sortBy) {
-      case 'price_asc':
-        query = query.order('price', { ascending: true })
-        break
-      case 'price_desc':
-        query = query.order('price', { ascending: false })
-        break
-      case 'name':
-        query = query.order('name', { ascending: true })
-        break
-      case 'rating':
-        query = query.order('rating', { ascending: false, nullsFirst: false })
-        break
+      case "price_asc":
+        query = query.order("price", { ascending: true });
+        break;
+      case "price_desc":
+        query = query.order("price", { ascending: false });
+        break;
+      case "name":
+        query = query.order("name", { ascending: true });
+        break;
+      case "rating":
+        query = query.order("rating", { ascending: false, nullsFirst: false });
+        break;
       default:
-        query = query.order('created_at', { ascending: false })
+        query = query.order("created_at", { ascending: false });
     }
 
     // Pagination
     if (filters?.limit) {
-      query = query.limit(filters.limit)
+      query = query.limit(filters.limit);
     }
 
     if (filters?.offset) {
-      query = query.range(filters.offset, filters.offset + (filters.limit || 20) - 1)
+      query = query.range(
+        filters.offset,
+        filters.offset + (filters.limit || 20) - 1,
+      );
     }
 
-    const { data, error } = await query
+    const { data, error } = await query;
 
-    if (error) throw error
-    return (data || []) as Product[]
+    if (error) throw error;
+    return (data || []) as Product[];
   } catch (error) {
-    console.error('Error fetching products:', error)
-    return filterMockProducts(filters)
+    console.error("Error fetching products:", error);
+    return filterMockProducts(filters);
   }
 }
 
 // Helper function to filter mock products
 function filterMockProducts(filters?: ProductFilters): Product[] {
-  let products = [...mockProducts]
+  let products = [...mockProducts];
 
   if (filters?.categorySlug) {
-    const categoryIndex = CATEGORIES.findIndex((cat) => cat.slug === filters.categorySlug)
+    const categoryIndex = CATEGORIES.findIndex(
+      (cat) => cat.slug === filters.categorySlug,
+    );
     if (categoryIndex !== -1) {
-      products = products.filter((p) => p.category_id === `cat-${categoryIndex + 1}`)
+      products = products.filter(
+        (p) => p.category_id === `cat-${categoryIndex + 1}`,
+      );
     }
   }
 
   if (filters?.search) {
-    const searchLower = filters.search.toLowerCase()
-    products = products.filter((p) => p.name.toLowerCase().includes(searchLower))
+    const searchLower = filters.search.toLowerCase();
+    products = products.filter((p) =>
+      p.name.toLowerCase().includes(searchLower),
+    );
   }
 
   if (filters?.isAvailable !== undefined) {
-    products = products.filter((p) => p.is_available === filters.isAvailable)
+    products = products.filter((p) => p.is_available === filters.isAvailable);
   }
 
   if (filters?.isFeatured) {
-    products = products.filter((p) => p.is_featured)
+    products = products.filter((p) => p.is_featured);
   }
 
   if (filters?.badge) {
-    products = products.filter((p) => p.badge === filters.badge)
+    products = products.filter((p) => p.badge === filters.badge);
   }
 
   // Sorting
   switch (filters?.sortBy) {
-    case 'price_asc':
-      products.sort((a, b) => a.price - b.price)
-      break
-    case 'price_desc':
-      products.sort((a, b) => b.price - a.price)
-      break
-    case 'name':
-      products.sort((a, b) => a.name.localeCompare(b.name))
-      break
-    case 'rating':
-      products.sort((a, b) => (b.rating || 0) - (a.rating || 0))
-      break
+    case "price_asc":
+      products.sort((a, b) => a.price - b.price);
+      break;
+    case "price_desc":
+      products.sort((a, b) => b.price - a.price);
+      break;
+    case "name":
+      products.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case "rating":
+      products.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      break;
   }
 
   // Pagination
   if (filters?.limit) {
-    const offset = filters.offset || 0
-    products = products.slice(offset, offset + filters.limit)
+    const offset = filters.offset || 0;
+    products = products.slice(offset, offset + filters.limit);
   }
 
-  return products
+  return products;
 }
 
 /**
@@ -297,24 +3397,26 @@ function filterMockProducts(filters?: ProductFilters): Product[] {
  */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   if (!isSupabaseConfigured()) {
-    return mockProducts.find((p) => p.slug === slug) || null
+    return mockProducts.find((p) => p.slug === slug) || null;
   }
 
   try {
     const { data, error } = await supabase
-      .from('products')
-      .select(`
+      .from("products")
+      .select(
+        `
         *,
         category:categories(id, name, slug, icon)
-      `)
-      .eq('slug', slug)
-      .single()
+      `,
+      )
+      .eq("slug", slug)
+      .single();
 
-    if (error) throw error
-    return data as Product
+    if (error) throw error;
+    return data as Product;
   } catch (error) {
-    console.error('Error fetching product:', error)
-    return mockProducts.find((p) => p.slug === slug) || null
+    console.error("Error fetching product:", error);
+    return mockProducts.find((p) => p.slug === slug) || null;
   }
 }
 
@@ -322,14 +3424,14 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
  * Search products
  */
 export async function searchProducts(query: string): Promise<Product[]> {
-  return getProducts({ search: query })
+  return getProducts({ search: query });
 }
 
 /**
  * Get featured products
  */
 export async function getFeaturedProducts(): Promise<Product[]> {
-  return getProducts({ isFeatured: true, limit: 10 })
+  return getProducts({ isFeatured: true, limit: 10 });
 }
 
 /**
@@ -338,23 +3440,30 @@ export async function getFeaturedProducts(): Promise<Product[]> {
 export async function getDailyBestSellers(): Promise<Product[]> {
   if (!isSupabaseConfigured()) {
     return mockProducts
-      .filter((p) => p.badge === 'hot' || p.badge === 'best-seller' || p.badge === 'popular')
-      .slice(0, 4)
+      .filter(
+        (p) =>
+          p.badge === "hot" ||
+          p.badge === "best-seller" ||
+          p.badge === "popular",
+      )
+      .slice(0, 4);
   }
 
   try {
     const { data, error } = await supabase
-      .from('products')
-      .select('*')
-      .in('badge', ['hot', 'best-seller', 'popular'])
-      .eq('is_available', true)
-      .limit(4)
+      .from("products")
+      .select("*")
+      .in("badge", ["hot", "best-seller", "popular"])
+      .eq("is_available", true)
+      .limit(4);
 
-    if (error) throw error
-    return (data || []) as Product[]
+    if (error) throw error;
+    return (data || []) as Product[];
   } catch (error) {
-    console.error('Error fetching best sellers:', error)
-    return mockProducts.filter((p) => p.badge === 'hot' || p.badge === 'best-seller').slice(0, 4)
+    console.error("Error fetching best sellers:", error);
+    return mockProducts
+      .filter((p) => p.badge === "hot" || p.badge === "best-seller")
+      .slice(0, 4);
   }
 }
 
@@ -362,60 +3471,66 @@ export async function getDailyBestSellers(): Promise<Product[]> {
  * Get top products grouped by type
  */
 export async function getTopProducts(): Promise<{
-  topSells: Product[]
-  topRated: Product[]
-  trending: Product[]
-  recentlyAdded: Product[]
+  topSells: Product[];
+  topRated: Product[];
+  trending: Product[];
+  recentlyAdded: Product[];
 }> {
   if (!isSupabaseConfigured()) {
-    const sortedByRating = [...mockProducts].sort((a, b) => (b.rating || 0) - (a.rating || 0))
-    const sortedByReviews = [...mockProducts].sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
+    const sortedByRating = [...mockProducts].sort(
+      (a, b) => (b.rating || 0) - (a.rating || 0),
+    );
+    const sortedByReviews = [...mockProducts].sort(
+      (a, b) => (b.review_count || 0) - (a.review_count || 0),
+    );
 
     return {
       topSells: sortedByReviews.slice(0, 3),
       topRated: sortedByRating.slice(0, 3),
-      trending: mockProducts.filter((p) => p.badge === 'hot' || p.badge === 'popular').slice(0, 3),
-      recentlyAdded: mockProducts.filter((p) => p.badge === 'new').slice(0, 3),
-    }
+      trending: mockProducts
+        .filter((p) => p.badge === "hot" || p.badge === "popular")
+        .slice(0, 3),
+      recentlyAdded: mockProducts.filter((p) => p.badge === "new").slice(0, 3),
+    };
   }
 
   try {
     const [topSells, topRated, trending, recentlyAdded] = await Promise.all([
       supabase
-        .from('products')
-        .select('*')
-        .eq('is_available', true)
-        .order('review_count', { ascending: false, nullsFirst: false })
+        .from("products")
+        .select("*")
+        .eq("is_available", true)
+        .order("review_count", { ascending: false, nullsFirst: false })
         .limit(3),
       supabase
-        .from('products')
-        .select('*')
-        .eq('is_available', true)
-        .order('rating', { ascending: false, nullsFirst: false })
+        .from("products")
+        .select("*")
+        .eq("is_available", true)
+        .order("rating", { ascending: false, nullsFirst: false })
         .limit(3),
       supabase
-        .from('products')
-        .select('*')
-        .in('badge', ['hot', 'popular'])
-        .eq('is_available', true)
+        .from("products")
+        .select("*")
+        .in("badge", ["hot", "popular"])
+        .eq("is_available", true)
         .limit(3),
       supabase
-        .from('products')
-        .select('*')
-        .eq('badge', 'new')
-        .eq('is_available', true)
+        .from("products")
+        .select("*")
+        .eq("badge", "new")
+        .eq("is_available", true)
         .limit(3),
-    ])
+    ]);
 
     return {
       topSells: (topSells.data || []) as Product[],
       topRated: (topRated.data || []) as Product[],
       trending: (trending.data || []) as Product[],
       recentlyAdded: (recentlyAdded.data || []) as Product[],
-    }
+    };
   } catch (error) {
-    console.error('Error fetching top products:', error)
-    return { topSells: [], topRated: [], trending: [], recentlyAdded: [] }
+    console.error("Error fetching top products:", error);
+    return { topSells: [], topRated: [], trending: [], recentlyAdded: [] };
   }
 }
 
@@ -425,19 +3540,19 @@ export async function getTopProducts(): Promise<{
 
 interface CreateOrderData {
   customer: {
-    name: string
-    phone: string
-    address: string
-    notes?: string
-  }
-  paymentMethod: PaymentMethod
-  gcashReference?: string
+    name: string;
+    phone: string;
+    address: string;
+    notes?: string;
+  };
+  paymentMethod: PaymentMethod;
+  gcashReference?: string;
   items: Array<{
-    productId: string
-    productName: string
-    productPrice: number
-    quantity: number
-  }>
+    productId: string;
+    productName: string;
+    productPrice: number;
+    quantity: number;
+  }>;
 }
 
 /**
@@ -446,18 +3561,20 @@ interface CreateOrderData {
 export async function createOrder(orderData: CreateOrderData): Promise<Order> {
   const subtotal = orderData.items.reduce(
     (sum, item) => sum + item.productPrice * item.quantity,
-    0
-  )
+    0,
+  );
   const deliveryFee =
-    subtotal >= DELIVERY_CONFIG.freeDeliveryThreshold ? 0 : DELIVERY_CONFIG.baseFee
-  const total = subtotal + deliveryFee
+    subtotal >= DELIVERY_CONFIG.freeDeliveryThreshold
+      ? 0
+      : DELIVERY_CONFIG.baseFee;
+  const total = subtotal + deliveryFee;
 
-  let order: Order
+  let order: Order;
 
   if (!isSupabaseConfigured()) {
     // Return mock order
-    const orderNumber = `SS-${new Date().toISOString().slice(2, 10).replace(/-/g, '')}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
-    
+    const orderNumber = `SS-${new Date().toISOString().slice(2, 10).replace(/-/g, "")}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
     order = {
       id: `order-${Date.now()}`,
       order_number: orderNumber,
@@ -465,34 +3582,34 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
       customer_phone: orderData.customer.phone,
       customer_address: orderData.customer.address,
       customer_notes: orderData.customer.notes,
-      status: 'pending',
+      status: "pending",
       subtotal,
       delivery_fee: deliveryFee,
       total,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-    }
+    };
   } else {
     try {
       // Create order
       const { data: orderData2, error: orderError } = await supabase
-        .from('orders')
+        .from("orders")
         .insert({
           customer_name: orderData.customer.name,
           customer_phone: orderData.customer.phone,
           customer_address: orderData.customer.address,
           customer_notes: orderData.customer.notes,
-          status: 'pending',
+          status: "pending",
           subtotal,
           delivery_fee: deliveryFee,
           total,
         })
         .select()
-        .single()
+        .single();
 
-      if (orderError) throw orderError
+      if (orderError) throw orderError;
 
-      order = orderData2 as Order
+      order = orderData2 as Order;
 
       // Create order items
       const orderItems = orderData.items.map((item) => ({
@@ -502,29 +3619,27 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
         product_price: item.productPrice,
         quantity: item.quantity,
         subtotal: item.productPrice * item.quantity,
-      }))
+      }));
 
       const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems)
+        .from("order_items")
+        .insert(orderItems);
 
-      if (itemsError) throw itemsError
+      if (itemsError) throw itemsError;
 
       // Create payment record
-      const { error: paymentError } = await supabase
-        .from('payments')
-        .insert({
-          order_id: order.id,
-          method: orderData.paymentMethod,
-          status: orderData.paymentMethod === 'cod' ? 'pending' : 'pending',
-          amount: total,
-          reference_number: orderData.gcashReference,
-        })
+      const { error: paymentError } = await supabase.from("payments").insert({
+        order_id: order.id,
+        method: orderData.paymentMethod,
+        status: orderData.paymentMethod === "cod" ? "pending" : "pending",
+        amount: total,
+        reference_number: orderData.gcashReference,
+      });
 
-      if (paymentError) throw paymentError
+      if (paymentError) throw paymentError;
     } catch (error) {
-      console.error('Error creating order:', error)
-      throw error
+      console.error("Error creating order:", error);
+      throw error;
     }
   }
 
@@ -545,69 +3660,73 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
     total,
     paymentMethod: orderData.paymentMethod,
     gcashReference: orderData.gcashReference,
-  }).catch((err) => console.error('Failed to send notification:', err))
+  }).catch((err) => console.error("Failed to send notification:", err));
 
-  return order
+  return order;
 }
 
 /**
  * Send order notification email
  */
 async function sendOrderNotification(data: {
-  orderNumber: string
-  customerName: string
-  customerPhone: string
-  customerAddress: string
-  customerNotes?: string
-  items: Array<{ name: string; price: number; quantity: number }>
-  subtotal: number
-  deliveryFee: number
-  total: number
-  paymentMethod: string
-  gcashReference?: string
+  orderNumber: string;
+  customerName: string;
+  customerPhone: string;
+  customerAddress: string;
+  customerNotes?: string;
+  items: Array<{ name: string; price: number; quantity: number }>;
+  subtotal: number;
+  deliveryFee: number;
+  total: number;
+  paymentMethod: string;
+  gcashReference?: string;
 }) {
   try {
-    const response = await fetch('/api/send-order-notification', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch("/api/send-order-notification", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
-    })
+    });
 
     if (!response.ok) {
-      throw new Error('Failed to send notification')
+      throw new Error("Failed to send notification");
     }
 
-    return await response.json()
+    return await response.json();
   } catch (error) {
-    console.error('Notification error:', error)
-    throw error
+    console.error("Notification error:", error);
+    throw error;
   }
 }
 
 /**
  * Get order by order number
  */
-export async function getOrderByNumber(orderNumber: string): Promise<Order | null> {
+export async function getOrderByNumber(
+  orderNumber: string,
+): Promise<Order | null> {
   if (!isSupabaseConfigured()) {
-    return null
+    return null;
   }
 
   try {
     const { data, error } = await supabase
-      .from('orders')
-      .select(`
+      .from("orders")
+      .select(
+        `
         *,
         items:order_items(*),
         payment:payments(*)
-      `)
-      .eq('order_number', orderNumber)
-      .single()
+      `,
+      )
+      .eq("order_number", orderNumber)
+      .single();
 
-    if (error) throw error
-    return data as Order
+    if (error) throw error;
+    return data as Order;
   } catch (error) {
-    console.error('Error fetching order:', error)
-    return null
+    console.error("Error fetching order:", error);
+    return null;
   }
 }
 
@@ -616,24 +3735,26 @@ export async function getOrderByNumber(orderNumber: string): Promise<Order | nul
  */
 export async function getUserOrders(userId: string): Promise<Order[]> {
   if (!isSupabaseConfigured()) {
-    return []
+    return [];
   }
 
   try {
     const { data, error } = await supabase
-      .from('orders')
-      .select(`
+      .from("orders")
+      .select(
+        `
         *,
         items:order_items(*),
         payment:payments(*)
-      `)
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+      `,
+      )
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
-    if (error) throw error
-    return (data || []) as Order[]
+    if (error) throw error;
+    return (data || []) as Order[];
   } catch (error) {
-    console.error('Error fetching user orders:', error)
-    return []
+    console.error("Error fetching user orders:", error);
+    return [];
   }
 }

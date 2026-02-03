@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { MapPin, Clock, Phone } from 'lucide-react'
-import { STORE_INFO } from '@/lib/constants'
+import { MapPin, Clock, Phone } from "lucide-react";
+import { STORE_INFO } from "@/lib/constants";
 
 export default function TopBar() {
   return (
@@ -10,8 +10,8 @@ export default function TopBar() {
         <div className="flex items-center gap-6">
           <span className="flex items-center gap-1.5">
             <MapPin className="w-4 h-4" />
-            <span className="hidden sm:inline">Deliver to:</span>
-            <strong>Manila, Philippines</strong>
+
+            <strong>Brgy. San Isidro SPC</strong>
           </span>
           <span className="hidden md:flex items-center gap-1.5">
             <Clock className="w-4 h-4" />
@@ -26,5 +26,5 @@ export default function TopBar() {
         </div>
       </div>
     </div>
-  )
+  );
 }
