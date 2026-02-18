@@ -111,7 +111,11 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
                 >
                   Start Shopping →
                 </Button>
-                <Button size="lg" variant="secondary">
+                <Button
+                  size="lg"
+                  variant="secondary"
+                  className="hidden md:block"
+                >
                   Learn More
                 </Button>
               </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -24,6 +24,7 @@ import { Textarea } from "@/components/ui/Input";
 import { STORE_INFO, DELIVERY_CONFIG } from "@/lib/constants";
 import { formatPrice, isValidPhoneNumber } from "@/lib/utils";
 import { createOrder } from "@/lib/api";
+import { supabase } from "@/lib/supabase";
 import { PRODUCT_IMAGES } from "@/lib/product-images";
 import toast from "react-hot-toast";
 
@@ -47,6 +48,26 @@ export default function CheckoutPage() {
     gcashReference: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Get logged-in user
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        setUserId(user.id);
+        // Pre-fill name from user metadata if empty
+        const name =
+          user.user_metadata?.full_name || user.user_metadata?.name || "";
+        if (name && !formData.name) {
+          setFormData((prev) => ({ ...prev, name }));
+        }
+      }
+    };
+    getUser();
+  }, []);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -98,6 +119,7 @@ export default function CheckoutPage() {
         },
         paymentMethod,
         gcashReference: formData.gcashReference,
+        userId: userId || undefined,
         items: items.map((item) => ({
           productId: item.product.id,
           productName: item.product.name,

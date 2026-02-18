@@ -3547,6 +3547,7 @@ interface CreateOrderData {
   };
   paymentMethod: PaymentMethod;
   gcashReference?: string;
+  userId?: string;
   items: Array<{
     productId: string;
     productName: string;
@@ -3599,6 +3600,7 @@ export async function createOrder(orderData: CreateOrderData): Promise<Order> {
           customer_phone: orderData.customer.phone,
           customer_address: orderData.customer.address,
           customer_notes: orderData.customer.notes,
+          user_id: orderData.userId || null,
           status: "pending",
           subtotal,
           delivery_fee: deliveryFee,
@@ -3744,7 +3746,10 @@ export async function getUserOrders(userId: string): Promise<Order[]> {
       .select(
         `
         *,
-        items:order_items(*),
+        items:order_items(
+          *,
+          product:products(id, name, slug, image_url, image_emoji)
+        ),
         payment:payments(*)
       `,
       )
