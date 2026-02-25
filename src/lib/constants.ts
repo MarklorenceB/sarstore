@@ -15,7 +15,7 @@ export const CATEGORIES = [
   {
     id: 1,
     name: "Cooking Essentials",
-    icon: "🍳",
+    icon: "🥘",
     slug: "cooking-essentials",
     itemCount: 45,
   },

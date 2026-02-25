@@ -71,7 +71,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
 
       {/* Hero Section */}
       <section
-        className="w-full py-16 md:py-24"
+        className="relative w-full py-16 md:py-24"
         style={{
           backgroundImage: "url('/images/land-banner.png')",
           backgroundRepeat: "no-repeat",
@@ -79,7 +79,11 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
           backgroundPosition: "center",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4">
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -89,14 +93,16 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
               <div className="inline-block px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
                 🎉 Free delivery on orders
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-gray-900 leading-tight font-display">
+
+              <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight font-display">
                 Fresh Groceries
-                <span className="text-primary-500"> Delivered</span> to Your
+                <span className="text-primary-400"> Delivered</span> to Your
                 Door
               </h1>
+
               <p
                 className="relative inline-block text-lg text-white px-4 py-2 rounded-xl
-  bg-gradient-to-r from-black/40 via-black/20 to-transparent backdrop-blur-sm"
+          bg-gradient-to-r from-black/40 via-black/20 to-transparent backdrop-blur-sm"
               >
                 Shop from your favorite local sari-sari store online. Fresh
                 products, great prices, and fast delivery right to your
@@ -111,6 +117,7 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
                 >
                   Start Shopping →
                 </Button>
+
                 <Button
                   size="lg"
                   variant="secondary"
@@ -119,18 +126,6 @@ function LandingPage({ onLogin }: { onLogin: () => void }) {
                   Learn More
                 </Button>
               </div>
-
-              {/* Stats */}
-              {/* <div className="flex gap-8 pt-8">
-                {STATS.map((stat, i) => (
-                  <div key={i}>
-                    <p className="text-3xl font-bold text-gray-900">
-                      {stat.value}
-                    </p>
-                    <p className="text-sm text-gray-500">{stat.label}</p>
-                  </div>
-                ))}
-              </div> */}
             </motion.div>
           </div>
         </div>
@@ -271,8 +266,6 @@ function MainPage({
 
       {/* Categories Section */}
 
-      {/* Categories Section */}
-      {/* Categories Section */}
       <section className="py-6">
         <div className="max-w-7xl mx-auto ">
           {/* Header */}

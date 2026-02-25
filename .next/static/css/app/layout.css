@@ -1810,6 +1810,10 @@ video {
   --tw-text-opacity: 1;
   color: rgb(220 252 231 / var(--tw-text-opacity, 1));
 }
+.text-primary-400 {
+  --tw-text-opacity: 1;
+  color: rgb(74 222 128 / var(--tw-text-opacity, 1));
+}
 .text-primary-500 {
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity, 1));

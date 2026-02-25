@@ -52,7 +52,8 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "instant-noodles": "/images/products/noodles.jpg",
   "cup-noodles": "/images/products/cup-noodles.webp",
   "pancit-canton": "/images/products/pancit-canton.webp",
-  "pancit-canton-chilimansi": "/images/products/pancit-chilimansi.webp",
+  "lucky-me-pancit-canton-chilimansi":
+    "/images/products/pancit-chilimansi.webp",
   "tuna-flakes-180g": "/images/products/tuna.jpg",
   "tuna-chunks-180g": "/images/products/tuna.jpg",
   "spam-340g": "/images/products/spam.jpg",
@@ -130,6 +131,22 @@ export const PRODUCT_IMAGES: Record<string, string> = {
   "bleach-1l": "/images/products/bleach.jpg",
   "alcohol-500ml": "/images/products/alcohol.jpg",
   "hand-soap-250ml": "/images/products/hand-soap.jpg",
+};
+
+// ============================================
+// CATEGORY IMAGE MAPPING
+// Maps category slug → representative product image
+// ============================================
+export const CATEGORY_IMAGES: Record<string, string> = {
+  "cooking-essentials": "/images/products/cooking-oil.jpg",
+  "eggs-dairy": "/images/products/eggs.jpg",
+  "meat-poultry": "/images/products/chicken.jpg",
+  "canned-packaged": "/images/products/corned-beef.jpg",
+  "frozen-foods": "/images/products/nuggets.jpg",
+  "bakery-snacks": "/images/products/pandesal.jpg",
+  beverages: "/images/products/coke.jpg",
+  "condiments-sauces": "/images/products/soy-sauce.jpg",
+  household: "/images/products/detergent.jpg",
 };
 
 // Helper function to get product image

@@ -51,7 +51,7 @@ export default function HeroBanner({ onSubscribe }: HeroBannerProps) {
             <p className="text-lg text-white">
               Fresh essentials delivered to your door
             </p>
-
+            {/* 
             <form onSubmit={handleSubmit} className="flex gap-2 max-w-md pt-2">
               <input
                 type="email"
@@ -59,7 +59,7 @@ export default function HeroBanner({ onSubscribe }: HeroBannerProps) {
                 className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500"
               />
               <Button type="submit">Subscribe</Button>
-            </form>
+            </form> */}
           </motion.div>
 
           {/* Images */}
