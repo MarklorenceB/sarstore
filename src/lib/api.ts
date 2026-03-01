@@ -5,6 +5,7 @@ import type {
   ProductFilters,
   Order,
   OrderItem,
+  OrderStatus,
   PaymentMethod,
 } from "@/types";
 import { CATEGORIES, DELIVERY_CONFIG } from "@/lib/constants";
@@ -3761,5 +3762,62 @@ export async function getUserOrders(userId: string): Promise<Order[]> {
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return [];
+  }
+}
+
+/**
+ * Get auth token for API calls
+ */
+async function getAuthToken(): Promise<string | null> {
+  const { data } = await supabase.auth.getSession();
+  return data.session?.access_token || null;
+}
+
+/**
+ * Get ALL orders (admin only) — goes through server API to bypass RLS
+ */
+export async function getAllOrders(): Promise<Order[]> {
+  try {
+    const token = await getAuthToken();
+    if (!token) return [];
+
+    const res = await fetch("/api/admin/orders", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!res.ok) return [];
+
+    const { orders } = await res.json();
+    return (orders || []) as Order[];
+  } catch (error) {
+    console.error("Error fetching all orders:", error);
+    return [];
+  }
+}
+
+/**
+ * Update order status (admin only) — goes through server API to bypass RLS
+ */
+export async function updateOrderStatus(
+  orderId: string,
+  status: OrderStatus,
+): Promise<boolean> {
+  try {
+    const token = await getAuthToken();
+    if (!token) return false;
+
+    const res = await fetch("/api/admin/orders", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ orderId, status }),
+    });
+
+    return res.ok;
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    return false;
   }
 }

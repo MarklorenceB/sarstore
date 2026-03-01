@@ -1,3 +1,9 @@
+// Admin
+export const ADMIN_EMAIL = "marklorenceberon06@gmail.com";
+export function isAdmin(email?: string | null): boolean {
+  return email === ADMIN_EMAIL;
+}
+
 // Store Information
 export const STORE_INFO = {
   name: "Sari-Store",

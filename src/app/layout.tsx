@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { SEO_DEFAULTS } from "@/lib/constants";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import { OrderNotificationListener } from "@/components/OrderNotificationListener";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -74,6 +75,7 @@ export default function RootLayout({
       </head>
       <body className="font-sans antialiased">
         <ServiceWorkerRegister />
+        <OrderNotificationListener />
         {children}
         <Toaster
           position="top-center"

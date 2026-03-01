@@ -1,8 +1,8 @@
-// File: C:\Users\Administrator\Documents\react-projects\sari-store\src\app\auth\callback\route.ts
-import * as entry from '../../../../../src/app/auth/callback/route.js'
+// File: C:\Users\Administrator\Documents\react-projects\sari-store\src\app\api\admin\orders\route.ts
+import * as entry from '../../../../../../src/app/api/admin/orders/route.js'
 import type { NextRequest } from 'next/server.js'
 
-type TEntry = typeof import('../../../../../src/app/auth/callback/route.js')
+type TEntry = typeof import('../../../../../../src/app/api/admin/orders/route.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{

@@ -15,10 +15,11 @@ import {
   LogOut,
   Package,
   Settings,
+  Shield,
 } from "lucide-react";
 import { useCartStore, useCartItemCount } from "@/store/cart";
 import { supabase } from "@/lib/supabase";
-import { STORE_INFO, CATEGORIES, NAV_LINKS } from "@/lib/constants";
+import { STORE_INFO, CATEGORIES, NAV_LINKS, isAdmin } from "@/lib/constants";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface HeaderProps {
@@ -285,6 +286,19 @@ export default function Header({ onLogout }: HeaderProps) {
                         </div>
                       </div>
                     </div>
+
+                    {isAdmin(user?.email) && (
+                      <Link
+                        href="/admin/orders"
+                        onClick={() => setIsUserMenuOpen(false)}
+                        className="flex items-center gap-3 px-4 py-2 hover:bg-primary-50 transition-colors"
+                      >
+                        <Shield className="w-4 h-4 text-primary-500" />
+                        <span className="text-sm text-primary-700 font-medium">
+                          Admin Orders
+                        </span>
+                      </Link>
+                    )}
 
                     <Link
                       href="/orders"

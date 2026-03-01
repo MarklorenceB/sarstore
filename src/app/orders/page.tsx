@@ -143,83 +143,83 @@ export default function MyOrdersPage() {
   const [activeFilter, setActiveFilter] = useState<FilterTab>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    const loadOrders = async () => {
-      setIsLoading(true);
+  const loadOrders = async () => {
+    setIsLoading(true);
 
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
+    const {
+      data: { user: currentUser },
+    } = await supabase.auth.getUser();
+    setUser(currentUser);
 
-      if (!user) {
-        setIsLoading(false);
-        return;
-      }
+    if (!currentUser) {
+      setIsLoading(false);
+      return;
+    }
 
-      // 1) Fetch from Supabase (now includes product join for images)
-      const supabaseOrders = await getUserOrders(user.id);
+    // 1) Fetch from Supabase (now includes product join for images)
+    const supabaseOrders = await getUserOrders(currentUser.id);
 
-      // 2) Also check localStorage for offline/mock orders
-      const localOrders: Order[] = [];
-      if (typeof window !== "undefined") {
-        for (let i = 0; i < localStorage.length; i++) {
-          const key = localStorage.key(i);
-          if (key && key.startsWith("order_")) {
-            try {
-              const data = JSON.parse(localStorage.getItem(key) || "{}");
-              if (data.orderNumber) {
-                const localOrder: Order = {
-                  id: key,
-                  order_number: data.orderNumber,
-                  customer_name: data.customerName,
-                  customer_phone: data.customerPhone,
-                  customer_address: data.customerAddress,
-                  customer_notes: data.customerNotes,
-                  status: "pending" as OrderStatus,
-                  subtotal: data.subtotal,
-                  delivery_fee: data.deliveryFee,
-                  total: data.total,
-                  items: data.items?.map((item: any, idx: number) => ({
-                    id: `local-item-${idx}`,
-                    order_id: key,
-                    product_id: "",
-                    product_name: item.name,
-                    product_price: item.price,
-                    quantity: item.quantity,
-                    subtotal: item.price * item.quantity,
-                    created_at: data.createdAt,
-                    // Carry over image fields from localStorage
-                    slug: item.slug || "",
-                    image_url: item.image_url || "",
-                    image_emoji: item.emoji || "",
-                  })),
+    // 2) Also check localStorage for offline/mock orders
+    const localOrders: Order[] = [];
+    if (typeof window !== "undefined") {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith("order_")) {
+          try {
+            const data = JSON.parse(localStorage.getItem(key) || "{}");
+            if (data.orderNumber) {
+              const localOrder: Order = {
+                id: key,
+                order_number: data.orderNumber,
+                customer_name: data.customerName,
+                customer_phone: data.customerPhone,
+                customer_address: data.customerAddress,
+                customer_notes: data.customerNotes,
+                status: "pending" as OrderStatus,
+                subtotal: data.subtotal,
+                delivery_fee: data.deliveryFee,
+                total: data.total,
+                items: data.items?.map((item: any, idx: number) => ({
+                  id: `local-item-${idx}`,
+                  order_id: key,
+                  product_id: "",
+                  product_name: item.name,
+                  product_price: item.price,
+                  quantity: item.quantity,
+                  subtotal: item.price * item.quantity,
                   created_at: data.createdAt,
-                  updated_at: data.createdAt,
-                };
-                localOrders.push(localOrder);
-              }
-            } catch {
-              // Skip invalid
+                  // Carry over image fields from localStorage
+                  slug: item.slug || "",
+                  image_url: item.image_url || "",
+                  image_emoji: item.emoji || "",
+                })),
+                created_at: data.createdAt,
+                updated_at: data.createdAt,
+              };
+              localOrders.push(localOrder);
             }
+          } catch {
+            // Skip invalid
           }
         }
       }
+    }
 
-      // 3) Merge & deduplicate
-      const supabaseNums = new Set(supabaseOrders.map((o) => o.order_number));
-      const uniqueLocal = localOrders.filter(
-        (o) => !supabaseNums.has(o.order_number),
-      );
-      const all = [...supabaseOrders, ...uniqueLocal].sort(
-        (a, b) =>
-          new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-      );
+    // 3) Merge & deduplicate
+    const supabaseNums = new Set(supabaseOrders.map((o) => o.order_number));
+    const uniqueLocal = localOrders.filter(
+      (o) => !supabaseNums.has(o.order_number),
+    );
+    const all = [...supabaseOrders, ...uniqueLocal].sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
 
-      setOrders(all);
-      setIsLoading(false);
-    };
+    setOrders(all);
+    setIsLoading(false);
+  };
 
+  useEffect(() => {
     loadOrders();
 
     const {
@@ -229,6 +229,31 @@ export default function MyOrdersPage() {
     });
     return () => subscription.unsubscribe();
   }, []);
+
+  // Real-time subscription for live order status updates
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel("customer-orders-realtime")
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "orders",
+          filter: `user_id=eq.${user.id}`,
+        },
+        () => {
+          loadOrders();
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user?.id]);
 
   // Filtered list
   const filteredOrders = orders.filter((order) => {
