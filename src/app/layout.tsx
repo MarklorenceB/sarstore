@@ -73,7 +73,7 @@ export default function RootLayout({
         {/* Splash screens for iOS */}
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased overflow-x-hidden">
         <ServiceWorkerRegister />
         <OrderNotificationListener />
         {children}

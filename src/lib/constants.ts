@@ -252,3 +252,39 @@ export const SEO_DEFAULTS = {
   keywords:
     "grocery, sari-sari store, online shopping, Philippines, delivery, fresh food",
 };
+
+// Homepage Testimonials
+export const TESTIMONIALS = [
+  {
+    id: 1,
+    name: 'Maria Santos',
+    location: 'Quezon City',
+    avatar: '👩',
+    rating: 5,
+    text: 'Napakadali mag-order! Fresh yung mga groceries at super bilis ng delivery. Hindi na kailangan pumila sa palengke.',
+  },
+  {
+    id: 2,
+    name: 'Juan Dela Cruz',
+    location: 'Makati',
+    avatar: '👨',
+    rating: 5,
+    text: 'Best sari-sari store online! Affordable prices and the delivery is always on time. Very convenient for busy people like me.',
+  },
+  {
+    id: 3,
+    name: 'Ana Reyes',
+    location: 'Pasig',
+    avatar: '👩‍🦱',
+    rating: 4,
+    text: 'Love the variety of products available. From cooking essentials to snacks, lahat meron! Will definitely order again.',
+  },
+];
+
+// Homepage Stats
+export const HOMEPAGE_STATS = [
+  { label: 'Deliveries', value: '1,000+', icon: '🚚' },
+  { label: 'Happy Customers', value: '500+', icon: '😊' },
+  { label: 'Products', value: '200+', icon: '📦' },
+  { label: 'Avg Delivery', value: '30min', icon: '⚡' },
+];

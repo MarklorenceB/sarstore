@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Search, SlidersHorizontal, X } from 'lucide-react'
-import { TopBar, Header, Footer } from '@/components/layout'
+import { Header, Footer, BottomTabNav } from '@/components/layout'
 import { ProductGrid } from '@/components/products'
 import { CartDrawer } from '@/components/cart'
 import { Button, Input } from '@/components/ui'
@@ -65,11 +65,10 @@ function SearchContent() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <TopBar />
+    <div className="min-h-screen bg-gray-50 pb-24">
       <Header />
 
-      <main className="max-w-7xl mx-auto px-4 py-8">
+      <main className="max-w-7xl mx-auto px-4 py-8 pt-24">
         {/* Search Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -192,6 +191,7 @@ function SearchContent() {
       </main>
 
       <Footer />
+      <BottomTabNav />
       <CartDrawer />
     </div>
   )

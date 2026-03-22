@@ -25,13 +25,13 @@ export default function CategoryCard({
   const content = (
     <div
       className={cn(
-        "flex flex-col items-center cursor-pointer group",
+        "flex flex-col items-center justify-center cursor-pointer group min-h-[120px] p-4",
         className,
       )}
     >
       <div
         className={cn(
-          "w-24 h-24 md:w-28 md:h-28 rounded-full",
+          "w-28 h-28 md:w-32 md:h-32 rounded-full",
           "border-2 transition-all duration-300 overflow-hidden",
           "flex items-center justify-center mb-3",
           "group-hover:shadow-lg group-hover:scale-105",
@@ -52,14 +52,14 @@ export default function CategoryCard({
             />
           </div>
         ) : (
-          <span className="text-5xl group-hover:scale-110 transition-transform duration-300">
+          <span className="text-4xl md:text-5xl group-hover:scale-110 transition-transform duration-300">
             {category.icon}
           </span>
         )}
       </div>
       <h3
         className={cn(
-          "font-semibold text-sm text-center transition-colors",
+          "font-semibold text-sm md:text-base text-center transition-colors mt-1",
           isActive
             ? "text-primary-600"
             : "text-gray-800 group-hover:text-primary-600",
@@ -107,7 +107,7 @@ export function CategoryBar({
   return (
     <div
       className={cn(
-        "flex overflow-x-auto gap-6 pb-4 scrollbar-hide",
+        "flex overflow-x-auto gap-4 pb-4 scrollbar-hide",
         className,
       )}
     >

@@ -7,29 +7,27 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Search,
   ShoppingCart,
-  Heart,
   User,
-  Menu,
-  X,
-  ChevronDown,
   LogOut,
   Package,
   Settings,
   Shield,
+  Store,
 } from "lucide-react";
 import { useCartStore, useCartItemCount } from "@/store/cart";
 import { supabase } from "@/lib/supabase";
-import { STORE_INFO, CATEGORIES, NAV_LINKS, isAdmin } from "@/lib/constants";
+import { CATEGORIES, isAdmin } from "@/lib/constants";
 import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 interface HeaderProps {
   onLogout?: () => void;
 }
 
+// Nav categories matching the mockup
+const NAV_CATEGORIES = CATEGORIES.slice(0, 5);
+
 export default function Header({ onLogout }: HeaderProps) {
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [user, setUser] = useState<SupabaseUser | null>(null);
@@ -50,7 +48,6 @@ export default function Header({ onLogout }: HeaderProps) {
       setUser(user);
 
       if (user) {
-        // Get user name from metadata or profile
         const name =
           user.user_metadata?.full_name ||
           user.user_metadata?.name ||
@@ -99,158 +96,117 @@ export default function Header({ onLogout }: HeaderProps) {
     if (onLogout) onLogout();
   };
 
-  // Get first name only for display
   const displayName = userProfile?.name?.split(" ")[0] || "User";
 
   return (
-    <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
-      {/* Main Header */}
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3">
-        <div className="flex items-center gap-2 sm:gap-4">
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
-          >
-            {isMenuOpen ? (
-              <X className="w-5 h-5" />
-            ) : (
-              <Menu className="w-5 h-5" />
-            )}
-          </button>
-
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-2xl sm:text-3xl">🛒</span>
-            <div className="hidden sm:block">
-              <h1 className="font-bold text-lg text-primary-600 leading-tight">
-                {STORE_INFO.name}
-              </h1>
-              <p className="text-[10px] text-gray-500 leading-tight">
-                {STORE_INFO.tagline}
-              </p>
-            </div>
+    <>
+      {/* ============================================
+          MOBILE HEADER - Clean glass morphism design
+          ============================================ */}
+      <header className="md:hidden fixed top-0 w-full z-40 bg-white/70 backdrop-blur-xl shadow-sm shadow-green-900/5">
+        <div className="flex justify-between items-center px-5 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <Store className="w-5 h-5 text-green-600" />
+            <span className="text-xl font-black tracking-tighter text-green-700 font-display">
+              Sari-Store
+            </span>
           </Link>
-
-          {/* Search Bar - Desktop */}
-          <form
-            onSubmit={handleSearch}
-            className="hidden md:flex flex-1 max-w-xl mx-4"
-          >
-            <div className="flex w-full">
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                  className="h-11 px-3 bg-gray-100 border border-r-0 border-gray-200 rounded-l-xl flex items-center gap-1 text-sm text-gray-600 hover:bg-gray-200 transition-colors whitespace-nowrap"
-                >
-                  All Categories
-                  <ChevronDown className="w-4 h-4" />
-                </button>
-
-                {/* Category Dropdown */}
-                <AnimatePresence>
-                  {isCategoryOpen && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 py-2"
-                    >
-                      {CATEGORIES.map((cat) => (
-                        <Link
-                          key={cat.id}
-                          href={`/category/${cat.slug}`}
-                          onClick={() => setIsCategoryOpen(false)}
-                          className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"
-                        >
-                          <span className="text-xl">{cat.icon}</span>
-                          <span className="text-sm text-gray-700">
-                            {cat.name}
-                          </span>
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              <input
-                type="text"
-                placeholder="Search for items..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="flex-1 h-11 px-4 border border-gray-200 text-sm focus:outline-none focus:border-primary-500 min-w-0"
-              />
-              <button
-                type="submit"
-                className="h-11 px-4 bg-primary-500 text-white rounded-r-xl hover:bg-primary-600 transition-colors"
-              >
-                <Search className="w-5 h-5" />
-              </button>
-            </div>
-          </form>
-
-          {/* Right Side Actions */}
-          <div className="flex items-center gap-1 sm:gap-2 ml-auto">
-            {/* Search - Mobile */}
+          <div className="flex items-center gap-3">
             <Link
               href="/search"
-              className="md:hidden p-2 hover:bg-gray-100 rounded-lg"
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              aria-label="Search"
             >
-              <Search className="w-5 h-5 text-gray-600" />
+              <Search className="w-5 h-5 text-gray-500" />
             </Link>
-
-            {/* Wishlist - Desktop only */}
-            <button className="hidden sm:flex flex-col items-center p-2 hover:bg-gray-100 rounded-lg">
-              <Heart className="w-5 h-5 text-gray-600" />
-              <span className="text-[10px] text-gray-500 mt-0.5">Wishlist</span>
+            <button
+              onClick={openCart}
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors relative"
+              aria-label="Shopping cart"
+            >
+              <ShoppingCart className="w-5 h-5 text-gray-500" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary-500 text-[10px] text-white font-bold">
+                  {cartItemCount > 9 ? "9+" : cartItemCount}
+                </span>
+              )}
             </button>
+          </div>
+        </div>
+        <div className="bg-gray-100/50 h-[1px] w-full" />
+      </header>
+
+      {/* ============================================
+          DESKTOP HEADER - Mockup style clean nav
+          ============================================ */}
+      <nav className="hidden md:block fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md shadow-sm">
+        <div className="flex items-center justify-between px-8 py-4 max-w-screen-2xl mx-auto">
+          {/* Left: Brand + Nav Links */}
+          <div className="flex items-center gap-12">
+            <Link href="/" className="text-2xl font-bold text-green-700 font-display tracking-tight">
+              Sari-Store
+            </Link>
+            <div className="hidden lg:flex items-center gap-8">
+              {NAV_CATEGORIES.map((cat, i) => (
+                <Link
+                  key={cat.id}
+                  href={`/category/${cat.slug}`}
+                  className={`py-1 transition-colors ${
+                    i === 0
+                      ? "text-green-700 border-b-2 border-green-600 font-semibold"
+                      : "text-slate-600 hover:text-green-600"
+                  }`}
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: Search + Cart + Account */}
+          <div className="flex items-center gap-6">
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="relative hidden lg:block">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search curated goods..."
+                className="w-64 pl-10 pr-4 py-2 bg-gray-100 border-none rounded-full text-sm focus:ring-2 focus:ring-green-500/20 focus:bg-white transition-all outline-none"
+              />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            </form>
 
             {/* Cart */}
             <button
               onClick={openCart}
-              className="flex flex-col items-center p-2 hover:bg-gray-100 rounded-lg relative"
+              className="p-2 hover:bg-slate-50 rounded-full transition-colors active:scale-95 duration-200 relative"
+              aria-label="Shopping cart"
             >
-              <div className="relative">
-                <ShoppingCart className="w-5 h-5 text-gray-600" />
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-accent-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                    {cartItemCount > 9 ? "9+" : cartItemCount}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] text-gray-500 mt-0.5 hidden sm:block">
-                My Cart
-              </span>
+              <ShoppingCart className="w-5 h-5 text-green-700" />
+              {cartItemCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-green-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  {cartItemCount > 9 ? "9+" : cartItemCount}
+                </span>
+              )}
             </button>
 
-            {/* User Account */}
+            {/* Account */}
             <div className="relative">
               <button
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg"
+                className="p-2 hover:bg-slate-50 rounded-full transition-colors active:scale-95 duration-200"
+                aria-label="Account"
               >
                 {userProfile?.avatar_url ? (
                   <img
                     src={userProfile.avatar_url}
                     alt={displayName}
-                    className="w-8 h-8 rounded-full object-cover border-2 border-primary-500"
+                    className="w-7 h-7 rounded-full object-cover border-2 border-green-500"
                   />
                 ) : (
-                  <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-primary-600" />
-                  </div>
+                  <User className="w-5 h-5 text-green-700" />
                 )}
-                <div className="hidden sm:block text-left">
-                  <p className="text-[10px] text-gray-500 leading-tight">
-                    Hello,
-                  </p>
-                  <p className="text-sm font-medium text-gray-900 leading-tight max-w-[80px] truncate">
-                    {displayName}
-                  </p>
-                </div>
-                <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
               </button>
 
               {/* User Dropdown */}
@@ -272,8 +228,8 @@ export default function Header({ onLogout }: HeaderProps) {
                             className="w-10 h-10 rounded-full object-cover"
                           />
                         ) : (
-                          <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                            <User className="w-5 h-5 text-primary-600" />
+                          <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <User className="w-5 h-5 text-green-600" />
                           </div>
                         )}
                         <div className="flex-1 min-w-0">
@@ -291,10 +247,10 @@ export default function Header({ onLogout }: HeaderProps) {
                       <Link
                         href="/admin/orders"
                         onClick={() => setIsUserMenuOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2 hover:bg-primary-50 transition-colors"
+                        className="flex items-center gap-3 px-4 py-2 hover:bg-green-50 transition-colors"
                       >
-                        <Shield className="w-4 h-4 text-primary-500" />
-                        <span className="text-sm text-primary-700 font-medium">
+                        <Shield className="w-4 h-4 text-green-600" />
+                        <span className="text-sm text-green-700 font-medium">
                           Admin Orders
                         </span>
                       </Link>
@@ -310,12 +266,12 @@ export default function Header({ onLogout }: HeaderProps) {
                     </Link>
 
                     <Link
-                      href="/settings"
+                      href="/profile"
                       onClick={() => setIsUserMenuOpen(false)}
                       className="flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors"
                     >
                       <Settings className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-700">Settings</span>
+                      <span className="text-sm text-gray-700">Profile</span>
                     </Link>
                     <hr className="my-2" />
                     <button
@@ -332,122 +288,14 @@ export default function Header({ onLogout }: HeaderProps) {
           </div>
         </div>
 
-        {/* Mobile Search */}
-        <form onSubmit={handleSearch} className="md:hidden mt-3">
-          <div className="flex">
-            <input
-              type="text"
-              placeholder="Search for items..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1 h-10 px-4 border border-gray-200 rounded-l-xl text-sm focus:outline-none focus:border-primary-500"
-            />
-            <button
-              type="submit"
-              className="h-10 px-4 bg-primary-500 text-white rounded-r-xl hover:bg-primary-600 transition-colors"
-            >
-              <Search className="w-4 h-4" />
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {/* Navigation Bar - Desktop */}
-      <nav className="hidden lg:block bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center gap-6">
-            {/* Browse Categories Button */}
-            <div className="relative">
-              <button
-                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                className="flex items-center gap-2 h-12 px-4 bg-primary-500 text-white font-medium rounded-none hover:bg-primary-600 transition-colors"
-              >
-                <Menu className="w-5 h-5" />
-                Browse Categories
-              </button>
-            </div>
-
-            {/* Nav Links */}
-            <div className="flex items-center gap-6">
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-sm font-medium text-gray-700 hover:text-primary-600 transition-colors py-3"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Navigation Menu */}
-      <AnimatePresence>
-        {isMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-gray-200 overflow-hidden"
-          >
-            <div className="px-4 py-4 space-y-4">
-              {/* Categories */}
-              <div>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                  Categories
-                </p>
-                <div className="grid grid-cols-2 gap-2">
-                  {CATEGORIES.map((cat) => (
-                    <Link
-                      key={cat.id}
-                      href={`/category/${cat.slug}`}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg hover:bg-primary-50 transition-colors"
-                    >
-                      <span className="text-lg">{cat.icon}</span>
-                      <span className="text-xs font-medium text-gray-700 truncate">
-                        {cat.name}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Quick Links */}
-              <div>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                  Quick Links
-                </p>
-                <div className="space-y-1">
-                  {NAV_LINKS.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMenuOpen(false)}
-                      className="block px-3 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-lg transition-colors"
-                    >
-                      {link.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </motion.div>
+        {/* Click outside to close dropdown */}
+        {isUserMenuOpen && (
+          <div
+            className="fixed inset-0 z-30"
+            onClick={() => setIsUserMenuOpen(false)}
+          />
         )}
-      </AnimatePresence>
-
-      {/* Click outside to close dropdowns */}
-      {(isCategoryOpen || isUserMenuOpen) && (
-        <div
-          className="fixed inset-0 z-30"
-          onClick={() => {
-            setIsCategoryOpen(false);
-            setIsUserMenuOpen(false);
-          }}
-        />
-      )}
-    </header>
+      </nav>
+    </>
   );
 }

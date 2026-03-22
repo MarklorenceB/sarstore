@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import { TopBar, Header, Footer } from "@/components/layout";
+import { Header, Footer } from "@/components/layout";
 import { HeroBanner, PromoBanners } from "@/components/home";
 import { CategoryCard, CategoryBar } from "@/components/categories";
 import {
@@ -64,9 +64,6 @@ export default function MainStorePage({ onLogout }: MainStorePageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Top Bar */}
-      <TopBar />
-
       {/* Header */}
       <Header onLogout={onLogout} />
 
